@@ -164,7 +164,6 @@ function setRatingByColumn(i) {
 }
 
 function drawChart(data) {
-    console.log(data);
     var chart = AmCharts.makeChart("chartdiv", {
         "type": "serial",
         "theme": "light",
