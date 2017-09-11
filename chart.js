@@ -51,7 +51,17 @@ function getChartData(result){
         .reduce((p, n) => n.map((_, i) => [...(p[i] || []), n[i]]), []);
 
 
-    const values = charts.map(x => x.reduce((result, x, id) => {
+    const values = getChartValues(charts);
+
+    const graphs = getChartGraphs(charts);
+
+    const labels = getResultLabels(result);
+
+    return { values, graphs, labels };
+}
+
+function getChartValues(charts) {
+    return charts.map(x => x.reduce((result, x, id) => {
         if(id === 0) {
             result['date'] = x;
         } else {
@@ -60,9 +70,11 @@ function getChartData(result){
         result['place_chart_'+id] = x.place_chart;
         }
         return result;
-    }, {}));
+    }, {}))
+}
 
-    const graphs = charts[charts.length-1].reduce((result, x, id) => {
+function getChartGraphs(charts) {
+    return charts[charts.length-1].reduce((result, x, id) => {
         if(id === 0) {
             return result;
         }
@@ -80,19 +92,20 @@ function getChartData(result){
             "valueField": `place_chart_${id}`
         });
         return result;
-    }, []);
+    }, [])
+}
 
-    const ranks = result
+function getResultLabels(result) {
+    return result
         .map(x => Object.assign({}, {
             name: x.name,
             place: x.values[x.values.length-1].place
         }))
         .reduce((total, x) => {
-            total[studentLength - x.place] = x.name;
+            const place = studentLength - x.place;
+            total[place] = `${x.place}. ${x.name}`;
             return total;
-        }, []);
-
-    return { values, graphs, ranks };
+        }, [])
 }
 
 function drawChart(data) {
@@ -100,8 +113,8 @@ function drawChart(data) {
         "type": "serial",
         "theme": "light",
         autoMargins: false,
-        marginTop: 0,
-        marginBottom: 50,
+        marginTop: 50,
+        marginBottom: 20,
         marginLeft: 0,
         marginRight: 180,
         "dataProvider": data.values,
@@ -109,10 +122,12 @@ function drawChart(data) {
             "axisAlpha": 0,
             "position": "right",
             "gridThickness": 0,
-            "labelFunction": position => data.ranks[position] || '',
+            "axisColor": '#fff',
+            "labelFunction": position => data.labels[position] || '',
         }],
         "categoryAxis": {
-            "axisAlpha": 0,
+            position: 'top',
+            "axisAlpha": 0.1,
             "gridThickness": 0,
         },
         "graphs": data.graphs,
