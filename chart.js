@@ -1,5 +1,12 @@
 let studentLength = undefined;
 const itemHeight = 50;
+const itemWidth = 150;
+const chartMargin = {
+    top: 25,
+    bottom: 10,
+    left: 180,
+    right: 250,
+}
 
 function doData(value) {
     studentLength = value.feed.entry[value.feed.entry.length-1]['gs$cell'].row-1;
@@ -15,8 +22,11 @@ function doData(value) {
     const chartData = getChartData(result);
 
     const chartHeight = studentLength * itemHeight + 5;
+    const chartWidth = result[0].values.length * itemWidth + chartMargin.left + chartMargin.right;
 
     document.getElementById('chartdiv').style.height = chartHeight + 'px';
+    document.getElementById('chartdiv').style.width = chartWidth + 'px';
+    document.getElementById('rating').style.width = chartWidth + 'px';
     document.getElementById('students').style.height = chartHeight + 'px';
 
     renderCurrentStudents(document.getElementById('students'), result);
@@ -205,10 +215,10 @@ function drawChart(data) {
         "type": "serial",
         "theme": "light",
         autoMargins: false,
-        marginTop: 25,
-        marginBottom: 10,
-        marginLeft: 180,
-        marginRight: 180,
+        marginTop: chartMargin.top,
+        marginBottom: chartMargin.bottom,
+        marginLeft: chartMargin.left,
+        marginRight: chartMargin.right,
         "dataProvider": data.values,
         "valueAxes": [{
             id: 'start',
@@ -229,7 +239,7 @@ function drawChart(data) {
             gridCount: studentLength*2,
             autoGridCount: true,
             minHorizontalGap: 20,
-            "labelFunction": position => data.currentLabels[position-1] || ''
+            labelFunction: position => ''
         }],
         "categoryAxis": {
             position: 'top',

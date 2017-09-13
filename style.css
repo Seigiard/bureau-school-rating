@@ -7,7 +7,7 @@ body {
 h1 {
     font-weight: normal;
 }
-.rating {
+#rating {
     margin-top: 2rem;
     position: relative;
 }
