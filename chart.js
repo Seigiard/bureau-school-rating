@@ -1,4 +1,5 @@
 let studentLength = undefined;
+const itemHeight = 50;
 
 function doData(value) {
     studentLength = value.feed.entry[value.feed.entry.length-1]['gs$cell'].row-1;
@@ -11,9 +12,14 @@ function doData(value) {
         setRatingByColumn(id)(result);
     })
 
-    timeline = result[0];
+    const chartData = getChartData(result);
 
-    drawChart(getChartData(result));
+    document.getElementById('chartdiv').style.height = studentLength * itemHeight + 'px';
+    document.getElementById('students').style.height = studentLength * itemHeight + 'px';
+
+    renderCurrentStudents(document.getElementById('students'), result);
+
+    drawChart(chartData);
 }
 
 function parseData(total, row, id) {
@@ -86,13 +92,13 @@ function getChartGraphs(charts) {
         result.push({
             "valueAxis": 'start',
             "id":`g${id}`,
-            "balloonText": `<b>[[place_${id}]]</b><br />[[points_${id}]]`,
+            "balloonText": ``,
             "type": "smoothedLine",
-            "lineThickness": x.place <= 30 ? 1 : 1,
-            "lineAlpha": x.place <= 30 ? 1 : .2,
+            "lineThickness": 0,
+            "lineAlpha": 0,
             "bullet":"round",
-            "bulletAlpha": x.place <= 30 ? 1 : .5,
-            "bulletSize":2,
+            "bulletAlpha": 0,
+            "bulletSize": 0,
             "bulletBorderAlpha":0,
             "valueField": `place_chart_${id}`
         });
@@ -115,11 +121,12 @@ function getChartGraphs(charts) {
 }
 
 function getCurrentResultLabels(result) {
+    const lastValueId = result[0].values.length-1;
     return result
         .slice(1)
         .map(x => Object.assign({}, {
             name: x.name,
-            place: x.values[x.values.length-1].place
+            place: x.values[lastValueId].place
         }))
         .sort((a, b) => a.place - b.place)
         .reduce((total, x) => {
@@ -163,30 +170,64 @@ function setRatingByColumn(i) {
     }
 }
 
+function htmlToElement(html) {
+    var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function renderCurrentStudents(el, result) {
+    const lastValueId = result[0].values.length-1;
+    const list = result
+        .slice(1)
+        .sort((a, b) => a.values[lastValueId].place - b.values[lastValueId].place)
+        .reduce((total, x) => {
+            const currentValues = x.values[lastValueId];
+            const prevValues = x.values[lastValueId-1];
+            const diffPlaces = (currentValues.place - prevValues.place) * -1;
+            const currentPoint = currentValues.points.toFixed(2);
+            const diffPoints = (currentValues.points - prevValues.points).toFixed(2);
+            const arrow = diffPlaces > 0 ? `↑${Math.abs(diffPlaces)}` : (diffPlaces < 0 ? `↓${Math.abs(diffPlaces)}` : ' ');
+            total.push(`<div class='student-list_item'>
+                <h2><span class='place'>${currentValues.place}.</span> ${x.name} <span class='place-diff'>${arrow}</span></h2>
+                <p><span class='points'>${currentPoint} <small>+${diffPoints}</small></span></p>
+            </div>`);
+            return total;
+        }, [])
+        .join('');
+    el.appendChild(htmlToElement(`<div class='student-list'>${list}</div>`));
+}
+
 function drawChart(data) {
     var chart = AmCharts.makeChart("chartdiv", {
         "type": "serial",
         "theme": "light",
         autoMargins: false,
-        marginTop: 50,
-        marginBottom: 20,
+        marginTop: 25,
+        marginBottom: 10,
         marginLeft: 180,
         marginRight: 180,
         "dataProvider": data.values,
         "valueAxes": [{
-            id: 'current',
-            "axisAlpha": 0,
-            "position": "right",
-            "gridThickness": 0,
-            "axisColor": '#fff',
-            "labelFunction": position => data.currentLabels[position-1] || '',
-        }, {
             id: 'start',
             "axisAlpha": 0,
             "position": "left",
             "gridThickness": 0,
             "axisColor": '#fff',
+            "color": '#ccc',
             "labelFunction": position => data.startLabels[position-1] || '',
+        }, {
+            id: 'current',
+            "axisAlpha": 0,
+            "position": "right",
+            "gridThickness": 0,
+            "axisColor": '#fff',
+            "color": '#fff',
+            ignoreAxisWidth: true,
+            gridCount: studentLength*2,
+            autoGridCount: true,
+            minHorizontalGap: 20,
+            "labelFunction": position => data.currentLabels[position-1] || ''
         }],
         "categoryAxis": {
             position: 'top',
