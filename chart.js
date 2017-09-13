@@ -14,8 +14,10 @@ function doData(value) {
 
     const chartData = getChartData(result);
 
-    document.getElementById('chartdiv').style.height = studentLength * itemHeight + 'px';
-    document.getElementById('students').style.height = studentLength * itemHeight + 'px';
+    const chartHeight = studentLength * itemHeight + 5;
+
+    document.getElementById('chartdiv').style.height = chartHeight + 'px';
+    document.getElementById('students').style.height = chartHeight + 'px';
 
     renderCurrentStudents(document.getElementById('students'), result);
 
