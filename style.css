@@ -7,6 +7,14 @@ body {
 h1 {
     font-weight: normal;
 }
+nav {}
+nav li {
+    display: inline-block;
+    list-style-type: none;
+}
+nav li a:active {
+    font-weight: bold;
+}
 #rating {
     margin-top: 2rem;
     position: relative;
@@ -29,12 +37,19 @@ h1 {
 }
 .student-list_item {
     height: 49px;
+    cursor: pointer;
 }
 .student-list_item h2, p {
     font-size: inherit;
     font-weight: inherit;
     margin: 0;
     padding: 0;
+}
+.student-list_item h2 .student-name {
+    border-bottom: 1px dashed blue;
+}
+.student-list_item.active h2 .student-name {
+    border-bottom-style: solid;
 }
 .student-list_item p {
     font-family: PT Serif, serif;

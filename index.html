@@ -1,19 +1,33 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Рейтинг студентов школы дизайнеров 2017</title>
+        <title>Рейтинг студентов школы бюро Горбунова</title>
         <link rel="stylesheet" href="style.css?201709131123">
     </head>
     <body>
-        <h1>Рейтинг студентов школы дизайнеров 2017</h1>
+        <h1>Рейтинг студентов школы дизайнеров бюро Горбунова</h1>
+        <nav>
+            <li><a href="#designers">Дизайнеры</a></li>
+            <li><a href="#editors">Редакторы</a></li>
+            <li><a href="#managers">Менеджеры</a></li>
+        </nav>
         <div id="rating">
             <div id="chartdiv"></div>
             <div id="students"></div>
         </div>
+
         <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
         <script src="https://www.amcharts.com/lib/3/serial.js"></script>
         <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
         <script src="chart.js?201709131123"></script>
-        <script src="https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/1/public/values?alt=json-in-script&callback=doData"></script>
+        <script>
+            // менеджеры
+            // https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/oz4l7lt/private/full
+            // редакторы
+            // https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/oofb3c5/private/full
+            // loadChart('https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/1/public/values?alt=json');
+            // loadChart('https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/oofb3c5/private/full?alt=json');
+            loadChart('https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/oz4l7lt/public/values?alt=json');
+        </script>
     </body>
 </html>

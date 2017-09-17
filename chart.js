@@ -1,6 +1,3 @@
-let studentLength = undefined;
-const itemHeight = 50;
-const itemWidth = 150;
 const chartMargin = {
     top: 25,
     bottom: 10,
@@ -8,54 +5,28 @@ const chartMargin = {
     right: 250,
 }
 
-function doData(value) {
-    studentLength = value.feed.entry[value.feed.entry.length-1]['gs$cell'].row-1;
-
-    const result = value.feed.entry
-        .reduce(parseData, [])
-        .map(prepareChart);
-
-    result[0].values.forEach((x, id) => {
-        setRatingByColumn(id)(result);
-    })
-
-    const chartData = getChartData(result);
-
-    const chartHeight = studentLength * itemHeight + 5;
-    const chartWidth = result[0].values.length * itemWidth + chartMargin.left + chartMargin.right;
-
-    document.getElementById('chartdiv').style.height = chartHeight + 'px';
-    document.getElementById('chartdiv').style.width = chartWidth + 'px';
-    document.getElementById('rating').style.width = chartWidth + 'px';
-    document.getElementById('students').style.height = chartHeight + 'px';
-
-    renderCurrentStudents(document.getElementById('students'), result);
-
-    drawChart(chartData);
-}
-
 function parseData(total, row, id) {
     const cell = row['gs$cell'];
-    const cellRow = cell.row-1;
+    const cellRow = cell.row - 1;
 
-    if(!total[cellRow]) {
+    if (!total[cellRow]) {
         total[cellRow] = {
-        name: cell['$t'],
-        values: []
-    };
+            name: cell['$t'],
+            values: []
+        };
     } else {
         total[cellRow].values.push(cell['$t']);
     }
     return total;
 }
 
-function prepareChart(student, id){
-    if(id === 0) { return student; }
+function prepareChart(student, id) {
+    if (id === 0) { return student; }
 
     const values = [];
 
     const studentPointsLength = student.values.length;
-    for(let i = 0; i < studentPointsLength; i++) {
+    for (let i = 0; i < studentPointsLength; i++) {
         values.push({
             points: +student.values[i],
         });
@@ -66,7 +37,7 @@ function prepareChart(student, id){
     return student;
 }
 
-function getChartData(result){
+function getChartData(result, studentLength) {
     const charts = result
         .map(x => x.values)
         .reduce((p, n) => n.map((_, i) => [...(p[i] || []), n[i]]), []);
@@ -76,64 +47,67 @@ function getChartData(result){
 
     const graphs = getChartGraphs(charts);
 
-    const currentLabels = getCurrentResultLabels(result);
-    const startLabels = getStartResultLabels(result);
+    const currentLabels = getCurrentResultLabels(result, studentLength);
+    const startLabels = getStartResultLabels(result, studentLength);
 
     return { values, graphs, currentLabels, startLabels };
 }
 
 function getChartValues(charts) {
     return charts.map(x => x.reduce((result, x, id) => {
-        if(id === 0) {
+        if (id === 0) {
             result['date'] = x;
         } else {
-        result['points_'+id] = x.points;
-        result['place_'+id] = x.place;
-        result['place_chart_'+id] = x.place_chart;
+            result['points_' + id] = x.points;
+            result['place_' + id] = x.place;
+            result['place_chart_' + id] = x.place_chart;
+            result['percentage_points_' + id] = x.percentage_points;
         }
         return result;
     }, {}))
 }
 
 function getChartGraphs(charts) {
-    return charts[charts.length-1].reduce((result, x, id) => {
-        if(id === 0) {
+    return charts[charts.length - 1].reduce((result, x, id) => {
+        if (id === 0) {
             return result;
         }
 
         result.push({
             "valueAxis": 'start',
-            "id":`g${id}`,
+            "id": `gStart${id}`,
             "balloonText": ``,
             "type": "smoothedLine",
             "lineThickness": 0,
             "lineAlpha": 0,
-            "bullet":"round",
+            "bullet": "round",
             "bulletAlpha": 0,
             "bulletSize": 0,
-            "bulletBorderAlpha":0,
+            "bulletBorderAlpha": 0,
             "valueField": `place_chart_${id}`
         });
 
         result.push({
             "valueAxis": 'current',
-            "id":`g2${id}`,
+            "id": `gCurrent${id}`,
             "balloonText": `<b>[[place_${id}]]</b><br />[[points_${id}]]`,
             "type": "smoothedLine",
             "lineThickness": x.place <= 30 ? 1 : 1,
+            "originalLineThickness": x.place <= 30 ? 1 : 1,
             "lineAlpha": x.place <= 30 ? 1 : .2,
-            "bullet":"round",
+            "originalLineAlpha": x.place <= 30 ? 1 : .2,
+            "bullet": "round",
             "bulletAlpha": x.place <= 30 ? 1 : .5,
-            "bulletSize":2,
-            "bulletBorderAlpha":0,
+            "bulletSize": 2,
+            "bulletBorderAlpha": 0,
             "valueField": `place_chart_${id}`
         });
         return result;
     }, [])
 }
 
-function getCurrentResultLabels(result) {
-    const lastValueId = result[0].values.length-1;
+function getCurrentResultLabels(result, studentLength) {
+    const lastValueId = result[0].values.length - 1;
     return result
         .slice(1)
         .map(x => Object.assign({}, {
@@ -148,7 +122,7 @@ function getCurrentResultLabels(result) {
         }, [])
 }
 
-function getStartResultLabels(result) {
+function getStartResultLabels(result, studentLength) {
     return result
         .slice(1)
         .map(x => Object.assign({}, {
@@ -156,7 +130,7 @@ function getStartResultLabels(result) {
             place: x.values[0].place
         }))
         .sort((a, b) => a.place - b.place)
-        .map((x, id) => Object.assign({}, x, { place: id+1 }))
+        .map((x, id) => Object.assign({}, x, { place: id + 1 }))
         .reduce((total, x) => {
             const place = studentLength - x.place;
             // console.error(x.place,place, x.name);
@@ -165,18 +139,20 @@ function getStartResultLabels(result) {
         }, [])
 }
 
-function setRatingByColumn(i) {
-    return function(results) {
-        const data = results
-            .slice(1)
-            .map((x, id) => {
-                x.id = id;
-                return x;
-            })
-            .sort((a, b) => b.values[i].points - a.values[i].points)
-            .map((x, id) => {
-                x.values[i].place = id+1;
-                x.values[i].place_chart = studentLength - id;
+function setRatingByColumn(i, studentLength) {
+    return function (results) {
+        const data = results.slice(1)
+            .sort((a, b) => b.values[i].points - a.values[i].points);
+
+        const minPoints = data[data.length - 1].values[i].points;
+        const maxPoints = data[1].values[i].points;
+
+        data
+            .forEach((x, id) => {
+                const result = results[x.id].values[i];
+                result.place = id + 1;
+                result.place_chart = studentLength - id;
+                result.percentage_points = (result.points - minPoints) * 100 / (maxPoints - minPoints);
                 return x;
             });
     }
@@ -188,29 +164,31 @@ function htmlToElement(html) {
     return template.content.firstChild;
 }
 
-function renderCurrentStudents(el, result) {
-    const lastValueId = result[0].values.length-1;
+function renderCurrentStudents(result) {
+    const el = document.getElementById('students');
+    const lastValueId = result[0].values.length - 1;
     const list = result
         .slice(1)
         .sort((a, b) => a.values[lastValueId].place - b.values[lastValueId].place)
         .reduce((total, x) => {
             const currentValues = x.values[lastValueId];
-            const prevValues = x.values[lastValueId-1];
+            const prevValues = x.values[lastValueId - 1];
             const diffPlaces = (currentValues.place - prevValues.place) * -1;
             const currentPoint = currentValues.points.toFixed(2);
             const diffPoints = (currentValues.points - prevValues.points).toFixed(2);
             const arrow = diffPlaces > 0 ? `↑${Math.abs(diffPlaces)}` : (diffPlaces < 0 ? `↓${Math.abs(diffPlaces)}` : ' ');
-            total.push(`<div class='student-list_item'>
-                <h2><span class='place'>${currentValues.place}.</span> ${x.name} <span class='place-diff'>${arrow}</span></h2>
+            total.push(`<div class='student-list_item' data-id='${x.id}'>
+                <h2><span class='place'>${currentValues.place}.</span> <span class="student-name">${x.name}</span> <span class='place-diff'>${arrow}</span></h2>
                 <p><span class='points'>${currentPoint} <small>+${diffPoints}</small></span></p>
             </div>`);
             return total;
         }, [])
         .join('');
+
     el.appendChild(htmlToElement(`<div class='student-list'>${list}</div>`));
 }
 
-function drawChart(data) {
+function drawChart(data, studentLength) {
     var chart = AmCharts.makeChart("chartdiv", {
         "type": "serial",
         "theme": "light",
@@ -227,7 +205,7 @@ function drawChart(data) {
             "gridThickness": 0,
             "axisColor": '#fff',
             "color": '#ccc',
-            "labelFunction": position => data.startLabels[position-1] || '',
+            "labelFunction": position => data.startLabels[position - 1] || '',
         }, {
             id: 'current',
             "axisAlpha": 0,
@@ -236,7 +214,7 @@ function drawChart(data) {
             "axisColor": '#fff',
             "color": '#fff',
             ignoreAxisWidth: true,
-            gridCount: studentLength*2,
+            gridCount: studentLength * 2,
             autoGridCount: true,
             minHorizontalGap: 20,
             labelFunction: position => ''
@@ -250,4 +228,129 @@ function drawChart(data) {
         "categoryField": "date",
         "plotAreaBorderAlpha": 0,
     });
+
+    return { chart };
+}
+
+function getSpreadSheet(url) {
+    return fetch(url) // Call the fetch function passing the url of the API as a parameter
+        .then(r => r.json())
+        .catch(console.error);
+}
+
+function parseSpreadSheetData(value) {
+    const itemHeight = 50;
+    const itemWidth = 150;
+    const studentLength = value.feed.entry[value.feed.entry.length - 1]['gs$cell'].row - 1;
+
+    const result = value.feed.entry
+        .reduce(parseData, [])
+        .map(prepareChart)
+        .map((x, id) => {
+            x.id = id;
+            return x;
+        });
+
+    result[0].values.forEach((x, id) => {
+        setRatingByColumn(id, studentLength)(result);
+    })
+
+    const chartData = getChartData(result, studentLength);
+
+    const chartHeight = studentLength * itemHeight + 5;
+    const chartWidth = result[0].values.length * itemWidth + chartMargin.left + chartMargin.right;
+
+    return {
+        studentLength,
+        chartHeight,
+        chartWidth,
+        chartData,
+        result
+    }
+}
+
+function setElementsMeasurements(chartWidth, chartHeight) {
+    document.getElementById('chartdiv').style.width = chartWidth + 'px';
+    document.getElementById('chartdiv').style.height = chartHeight + 'px';
+    document.getElementById('rating').style.width = chartWidth + 'px';
+    document.getElementById('students').style.height = chartHeight + 'px';
+}
+
+function findAncestor(el, cls) {
+    if(el.classList.contains(cls)) {
+        return el;
+    }
+    while ((el = el.parentElement) && !el.classList.contains(cls));
+    return el;
+}
+
+function getSiblings(originalEl) {
+    var siblings = [];
+    let el = originalEl.parentNode.firstChild;
+    do { if (!el !== originalEl) siblings.push(el); } while (el = el.nextSibling);
+    return siblings;
+}
+
+function orderDataset(dataset, sortFunction) {
+    return Object.keys(dataset).reduce((r, k) => (r[k] = sortObjectByFunction(dataset[k], sortFunction), r), {});
+}
+
+function sortObjectByFunction(o, sortFunction) {
+    return Object.keys(o).sort(sortFunction).reduce((r, k) => (r[k] = o[k], r), {});
+}
+
+function setLineHighlighter(chart) {
+    const container = document.getElementsByClassName('student-list')[0];
+    const studentItems = [...container.childNodes];
+
+    container.addEventListener('click', e => {
+        var el = findAncestor(e.target, 'student-list_item');
+        if (!el) { return; }
+
+        studentItems.forEach(i => {
+            if(i === el) {
+                i.classList.toggle('active');
+            } else {
+                i.classList.remove('active');
+            }
+        })
+
+        let graphId = 'gCurrent' + el.dataset.id;
+
+        if(!el.classList.contains('active')) {
+            graphId = '_und';
+        }
+
+        chart.graphs.forEach(graph => {
+            if(graph.valueAxis.id !== 'current') {
+                return;
+            }
+            const isActiveGraph = graph.id === graphId
+            graph.lineThickness = isActiveGraph ? 4 : graph.originalLineThickness;
+            graph.lineAlpha = isActiveGraph ? 1 : graph.originalLineAlpha;
+        });
+        chart.graphs.sort(graph => graph.id === graphId);
+        chart.validateData();
+    });
+}
+
+function callAndResolve(func) {
+    return function (x) {
+        const result = func(x);
+        const responce = result ? Object.assign(x, result) : x;
+        return Promise.resolve(responce);
+    }
+}
+
+function loadChart(url) {
+    // const url = 'https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/1/public/values?alt=json';
+    getSpreadSheet(url)
+        .then(parseSpreadSheetData)
+        .then(callAndResolve(x => setElementsMeasurements(x.chartWidth, x.chartHeight)))
+        .then(callAndResolve(x => renderCurrentStudents(x.result)))
+        .then(callAndResolve(x => drawChart(x.chartData, x.studentLength)))
+        .then(callAndResolve(x => setLineHighlighter(x.chart)))
+        .then(callAndResolve(x => {
+            document.getElementsByClassName('student-list_item')[0].click();
+        }));
 }
