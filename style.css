@@ -1,3 +1,11 @@
+:root {
+    --linkColor:#065580;
+    --linkUnderlineColor:rgba(6,85,128,.1);
+    --linkVisitedColor:#821388;
+    --linkVisitedUnderlineColor:rgba(85,26,139,.1);
+    --keyColor:#e20016;
+    --keyUnderlineColor:rgba(226,0,22,.1);
+}
 body {
     background: #fff;
     margin:0;
@@ -12,8 +20,27 @@ nav li {
     display: inline-block;
     list-style-type: none;
 }
-nav li a:active {
-    font-weight: bold;
+nav li a {
+    display: inline-block;
+    line-height: 1.4em;
+}
+nav li strong {
+    color: var(--keyColor);
+}
+nav li + li {
+    margin-left: .5rem;
+}
+a, a:visited, .link {
+    background-image: linear-gradient(180deg,var(--linkUnderlineColor) 0,var(--linkUnderlineColor));
+    background-repeat: repeat-x;
+    background-position: 0 90%;
+    background-size: 1px 1px;
+    text-decoration: none;
+    color: var(--linkColor);
+}
+a:hover, a:active, .link:hover, .link:active {
+    background-image: linear-gradient(180deg,var(--keyColor) 0,var(--keyColor));
+    color: var(--keyColor);
 }
 #rating {
     margin-top: 2rem;
@@ -21,7 +48,7 @@ nav li a:active {
 }
 #chartdiv {
 	width	: 100%;
-	height	: 3000px;
+	height	: 100vh;
 }
 
 #students {
@@ -29,7 +56,7 @@ nav li a:active {
     top: 0;
     right: 0;
 	width	: 250px;
-	height	: 3000px;
+	height	: 100vh;
 }
 
 .student-list {
@@ -44,12 +71,26 @@ nav li a:active {
     font-weight: inherit;
     margin: 0;
     padding: 0;
+    line-height: 1.2;
 }
 .student-list_item h2 .student-name {
-    border-bottom: 1px dashed blue;
+    background-image: linear-gradient(to left,var(--linkUnderlineColor) 0,var(--linkUnderlineColor) 50%, #fff 50%, #fff 100%);
+    background-repeat: repeat-x;
+    background-position: 0 90%;
+    background-size: 6px 1px;
+    text-decoration: none;
+    color: var(--linkColor);
+    display: inline-block;
+    line-height: 1.4;
+}
+.student-list_item:hover h2 .student-name,
+.student-list_item.active h2 .student-name {
+    background-image: linear-gradient(180deg,var(--linkUnderlineColor) 0,var(--linkUnderlineColor));
+    color: var(--linkColor);
 }
 .student-list_item.active h2 .student-name {
-    border-bottom-style: solid;
+    font-weight: bold;
+    background-image: none;
 }
 .student-list_item p {
     font-family: PT Serif, serif;
@@ -59,6 +100,7 @@ nav li a:active {
     transition: opacity .3s ease;
     margin-left: 1.8rem;
 }
+.student-list_item.active p,
 .student-list_item:hover p {
     visibility: visible;
     opacity: 1;
