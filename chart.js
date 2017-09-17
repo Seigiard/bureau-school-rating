@@ -145,14 +145,14 @@ function setRatingByColumn(i, studentLength) {
             .sort((a, b) => b.values[i].points - a.values[i].points);
 
         const minPoints = data[data.length - 1].values[i].points;
-        const maxPoints = data[1].values[i].points;
+        const maxPoints = data[0].values[i].points;
 
         data
             .forEach((x, id) => {
                 const result = results[x.id].values[i];
                 result.place = id + 1;
                 result.place_chart = studentLength - id;
-                result.percentage_points = (result.points - minPoints) * 100 / (maxPoints - minPoints);
+                result.percentage_points = (result.points * 100 / maxPoints).toFixed(2);
                 return x;
             });
     }
@@ -178,8 +178,14 @@ function renderCurrentStudents(result) {
             const diffPoints = (currentValues.points - prevValues.points).toFixed(2);
             const arrow = diffPlaces > 0 ? `↑${Math.abs(diffPlaces)}` : (diffPlaces < 0 ? `↓${Math.abs(diffPlaces)}` : ' ');
             total.push(`<div class='student-list_item' data-id='${x.id}'>
-                <h2><span class='place'>${currentValues.place}.</span> <span class="student-name">${x.name}</span> <span class='place-diff'>${arrow}</span></h2>
-                <p><span class='points'>${currentPoint} <small>+${diffPoints}</small></span></p>
+                <h2>
+                    <span class='place'>${currentValues.place}.</span>
+                    <span class="student-percentage"><span class="student-name" style="background-size:${currentValues.percentage_points}% 1px;">${x.name}</span></span>
+                </h2>
+                <p>
+                    <span class='place-diff'>${arrow}</span>
+                    <span class='points'>${currentPoint} <small>+${diffPoints}</small></span>
+                </p>
             </div>`);
             return total;
         }, [])
