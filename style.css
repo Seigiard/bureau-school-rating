@@ -5,9 +5,9 @@
     --linkVisitedUnderlineColor:rgba(85,26,139,.1);
     --keyColor:#e20016;
     --keyUnderlineColor:rgba(226,0,22,.1);
-    --colorRating: rgba(6,85,128,.2);
-    --colorRatingActive: rgba(6,85,128,.25);
-    --colorRatingTotal: #eeeeee;
+    --colorRating: #E6EEF2;
+    --colorRatingActive: #E6EEF2;
+    --colorRatingTotal: #E6EEF2;
     --colorTransparent:rgba(0,0,0,0);
 }
 body {
@@ -18,6 +18,9 @@ body {
 }
 h1 {
     font-weight: normal;
+}
+nav {
+    margin-bottom: 3rem;
 }
 nav li {
     display: inline-block;
@@ -79,22 +82,20 @@ a:hover, a:active, .link:hover, .link:active {
 .student-list_item h2 .student-name {
     cursor: pointer;
     display: inline-block;
-    width: calc(250px - 2rem);
     line-height: 1.4;
-    background-image: linear-gradient(to left,var(--colorRating) 0,var(--colorRating));
-    background-repeat: no-repeat;
-    background-position: 0 90%;
+    background-image: linear-gradient(to left,var(--colorRating) 0, var(--colorRating) 50%, var(--colorTransparent) 50%);
+    background-repeat: repeat-x;
+    background-position: 0 100%;
     background-size: 6px 1px;
     text-decoration: none;
     color: var(--linkColor);
 }
-.student-list_item:hover h2 .student-name,
-.student-list_item.active h2 .student-name {
-    background-image: linear-gradient(180deg,var(--keyColor) 0,var(--keyColor));
+.student-list_item:hover h2 .student-name {
+    background-image: linear-gradient(180deg,var(--colorRatingActive) 0,var(--colorRatingActive));
 }
 .student-list_item.active h2 .student-name {
+    background-image: none;
     font-weight: bold;
-    color: var(--keyColor);
 }
 .student-percentage {
     cursor: pointer;
@@ -102,16 +103,18 @@ a:hover, a:active, .link:hover, .link:active {
     width: calc(250px - 2rem);
     line-height: 1.4;
     background-image: linear-gradient(180deg, var(--colorRatingTotal), var(--colorRatingTotal));
-    background-size: 100% 1px;
+    background-size: 100% 2px;
     background-repeat: no-repeat;
-    background-position: 100% 90%;
+    background-position: 0 100%;
 }
 .student-list_item p {
+    margin-top: .1rem;
     font-family: PT Serif, serif;
     font-size: .82em;
     visibility: hidden;
     opacity: 0;
     transition: opacity .3s ease;
+    margin-left: 1.7rem;
 }
 .student-list_item.active p,
 .student-list_item:hover p {
@@ -126,13 +129,20 @@ a:hover, a:active, .link:hover, .link:active {
     font-size: .82em;
 }
 .student-list_item .place-diff {
-    display: inline-block;
-    text-align: right;
     letter-spacing: -.5px;
     color: var(--keyColor);
-    width: 1.4rem;
-    margin-right: .2rem;
+    margin-left: .2rem;
 }
 .student-list_item .points small {
     margin-left: .3rem;
+}
+
+footer {
+    font-size: 82.5%;
+    margin-top: 5rem;
+    margin-bottom: 2rem
+}
+
+footer p {
+    margin-bottom: .5rem;
 }

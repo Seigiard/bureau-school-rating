@@ -180,10 +180,12 @@ function renderCurrentStudents(result) {
             total.push(`<div class='student-list_item' data-id='${x.id}'>
                 <h2>
                     <span class='place'>${currentValues.place}.</span>
-                    <span class="student-percentage"><span class="student-name" style="background-size:${currentValues.percentage_points}% 1px;">${x.name}</span></span>
+                    <span class="student-percentage" style="background-size:${100-currentValues.percentage_points}% 2px;">
+                        <span class="student-name">${x.name}</span>
+                        <span class='place-diff'>${arrow}</span>
+                    </span>
                 </h2>
                 <p>
-                    <span class='place-diff'>${arrow}</span>
                     <span class='points'>${currentPoint} <small>+${diffPoints}</small></span>
                 </p>
             </div>`);

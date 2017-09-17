@@ -2,7 +2,7 @@
     <head>
         <meta charset="utf-8">
         <title>Рейтинг студентов школы редакторов Бюро Горбунова</title>
-        <link rel="stylesheet" href="style.css?201709172023">
+        <link rel="stylesheet" href="style.css?201709172223">
     </head>
     <body>
         <h1>Рейтинг студентов школы Бюро Горбунова</h1>
@@ -16,10 +16,15 @@
             <div id="students"></div>
         </div>
 
+        <footer>
+            <p>Рейтинг вычисляется автоматически на основе <a href="https://docs.google.com/spreadsheets/d/1lzJJ7P7qQW9SA7dYHng8f1kqtj6eC6c6hcznEF15ZXw/">данных об успеваемости</a> школы Бюро Горбунова.</p>
+            <p>Возможны расхождения с данными на сайте Бюро. Робот не очень умный.</p>
+        </footer>
+
         <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
         <script src="https://www.amcharts.com/lib/3/serial.js"></script>
         <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-        <script src="chart.js?201709172023"></script>
+        <script src="chart.js?201709172223"></script>
         <script>
             loadChart('https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/2/public/values?alt=json');
         </script>
