@@ -233,6 +233,14 @@ function drawChart(data, studentLength) {
         "graphs": data.graphs,
         "categoryField": "date",
         "plotAreaBorderAlpha": 0,
+        "listeners": [
+            {
+                "event": "rendered",
+                "method": () => {
+                    setLineHighlighter(chart);
+                }
+            }
+        ],
     });
 
     return { chart };
@@ -339,6 +347,8 @@ function setLineHighlighter(chart) {
         chart.graphs.sort(graph => graph.id === graphId);
         chart.validateData();
     });
+
+    document.getElementsByClassName('student-list_item')[0].click();
 }
 
 function callAndResolve(func) {
@@ -355,9 +365,5 @@ function loadChart(url) {
         .then(parseSpreadSheetData)
         .then(callAndResolve(x => setElementsMeasurements(x.chartMinWidth, x.chartMaxWidth, x.chartHeight)))
         .then(callAndResolve(x => renderCurrentStudents(x.result)))
-        .then(callAndResolve(x => drawChart(x.chartData, x.studentLength)))
-        .then(callAndResolve(x => setLineHighlighter(x.chart)))
-        .then(callAndResolve(x => {
-            document.getElementsByClassName('student-list_item')[0].click();
-        }));
+        .then(callAndResolve(x => drawChart(x.chartData, x.studentLength)));
 }
