@@ -1,9 +1,12 @@
 const chartMargin = {
     top: 25,
-    bottom: 10,
-    left: 180,
-    right: 250,
+    bottom: 0,
+    left: 0,
+    right: 0,
 }
+const itemHeight = 50;
+const itemMinWidth = 70;
+const itemMaxWidth = 150;
 
 function parseData(total, row, id) {
     const cell = row['gs$cell'];
@@ -73,19 +76,19 @@ function getChartGraphs(charts) {
             return result;
         }
 
-        result.push({
-            "valueAxis": 'start',
-            "id": `gStart${id}`,
-            "balloonText": ``,
-            "type": "smoothedLine",
-            "lineThickness": 0,
-            "lineAlpha": 0,
-            "bullet": "round",
-            "bulletAlpha": 0,
-            "bulletSize": 0,
-            "bulletBorderAlpha": 0,
-            "valueField": `place_chart_${id}`
-        });
+        // result.push({
+        //     "valueAxis": 'start',
+        //     "id": `gStart${id}`,
+        //     "balloonText": ``,
+        //     "type": "smoothedLine",
+        //     "lineThickness": 0,
+        //     "lineAlpha": 0,
+        //     "bullet": "round",
+        //     "bulletAlpha": 0,
+        //     "bulletSize": 0,
+        //     "bulletBorderAlpha": 0,
+        //     "valueField": `place_chart_${id}`
+        // });
 
         result.push({
             "valueAxis": 'current',
@@ -206,27 +209,22 @@ function drawChart(data, studentLength) {
         marginLeft: chartMargin.left,
         marginRight: chartMargin.right,
         "dataProvider": data.values,
-        "valueAxes": [{
-            id: 'start',
-            "axisAlpha": 0,
-            "position": "left",
-            "gridThickness": 0,
-            "axisColor": '#fff',
-            "color": '#ccc',
-            "labelFunction": position => data.startLabels[position - 1] || '',
-        }, {
-            id: 'current',
-            "axisAlpha": 0,
-            "position": "right",
-            "gridThickness": 0,
-            "axisColor": '#fff',
-            "color": '#fff',
-            ignoreAxisWidth: true,
-            gridCount: studentLength * 2,
-            autoGridCount: true,
-            minHorizontalGap: 20,
-            labelFunction: position => ''
-        }],
+        "valueAxes": [
+            {
+                id: 'current',
+                "axisAlpha": 0,
+                "position": "left",
+                "gridThickness": 0,
+                "axisColor": '#fff',
+                "color": '#ccc',
+                gridCount: studentLength * 2,
+                autoGridCount: false,
+                strictMinMax: true,
+                minimum: 0,
+                maximum: studentLength+1,
+                "labelFunction": position => '', //data.startLabels[position - 1] || '',
+            }
+        ],
         "categoryAxis": {
             position: 'top',
             "axisAlpha": 0.1,
@@ -247,8 +245,6 @@ function getSpreadSheet(url) {
 }
 
 function parseSpreadSheetData(value) {
-    const itemHeight = 50;
-    const itemWidth = 150;
     const studentLength = value.feed.entry[value.feed.entry.length - 1]['gs$cell'].row - 1;
 
     const result = value.feed.entry
@@ -265,22 +261,25 @@ function parseSpreadSheetData(value) {
 
     const chartData = getChartData(result, studentLength);
 
-    const chartHeight = studentLength * itemHeight + 5;
-    const chartWidth = result[0].values.length * itemWidth + chartMargin.left + chartMargin.right;
+    const chartHeight = studentLength * itemHeight + chartMargin.top + chartMargin.bottom;
+    const chartMinWidth = result[0].values.length * itemMinWidth + chartMargin.left + chartMargin.right;
+    const chartMaxWidth = result[0].values.length * itemMaxWidth + chartMargin.left + chartMargin.right;
 
     return {
         studentLength,
         chartHeight,
-        chartWidth,
+        chartMinWidth,
+        chartMaxWidth,
         chartData,
         result
     }
 }
 
-function setElementsMeasurements(chartWidth, chartHeight) {
-    document.getElementById('chartdiv').style.width = chartWidth + 'px';
+function setElementsMeasurements(chartMinWidth, chartMaxWidth, chartHeight) {
+    document.getElementById('chartdiv').style.minWidth = chartMinWidth + 'px';
+    document.getElementById('chartdiv').style.maxWidth = chartMaxWidth + 'px';
     document.getElementById('chartdiv').style.height = chartHeight + 'px';
-    document.getElementById('rating').style.width = chartWidth + 'px';
+    document.getElementById('rating').style.maxWidth = (chartMaxWidth + 250) + 'px';
     document.getElementById('students').style.height = chartHeight + 'px';
 }
 
@@ -354,7 +353,7 @@ function loadChart(url) {
     // const url = 'https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/1/public/values?alt=json';
     getSpreadSheet(url)
         .then(parseSpreadSheetData)
-        .then(callAndResolve(x => setElementsMeasurements(x.chartWidth, x.chartHeight)))
+        .then(callAndResolve(x => setElementsMeasurements(x.chartMinWidth, x.chartMaxWidth, x.chartHeight)))
         .then(callAndResolve(x => renderCurrentStudents(x.result)))
         .then(callAndResolve(x => drawChart(x.chartData, x.studentLength)))
         .then(callAndResolve(x => setLineHighlighter(x.chart)))

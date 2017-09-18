@@ -18,8 +18,9 @@ body {
 }
 h1 {
     font-weight: normal;
+    margin: 1rem 0 .5rem;
 }
-nav {
+header {
     margin-bottom: 3rem;
 }
 nav li {
@@ -48,19 +49,18 @@ a:hover, a:active, .link:hover, .link:active {
     background-image: linear-gradient(180deg,var(--keyColor) 0,var(--keyColor));
     color: var(--keyColor);
 }
+
 #rating {
-    margin-top: 2rem;
     position: relative;
 }
 #chartdiv {
 	width	: 100%;
 	height	: 100vh;
 }
-
 #students {
-    position: absolute;
+    /* position: absolute;
     top: 0;
-    right: 0;
+    right: 0; */
 	width	: 250px;
 	height	: 100vh;
 }
@@ -71,6 +71,15 @@ a:hover, a:active, .link:hover, .link:active {
 .student-list_item {
     height: 49px;
     cursor: pointer;
+}
+body.designers .student-list_item {
+    height: 49.37px
+}
+body.editors .student-list_item {
+    height: 49.47px;
+}
+body.managers .student-list_item {
+    height: 49px;
 }
 .student-list_item h2, p {
     font-size: inherit;
@@ -97,7 +106,7 @@ a:hover, a:active, .link:hover, .link:active {
     background-image: none;
     font-weight: bold;
 }
-.student-percentage {
+.student-list_item:hover h2 .student-percentage {
     cursor: pointer;
     display: inline-block;
     width: calc(250px - 2rem);
@@ -137,12 +146,63 @@ a:hover, a:active, .link:hover, .link:active {
     margin-left: .3rem;
 }
 
+aside p {
+    margin-bottom: .5rem;
+}
+aside {
+    margin-bottom: 3rem;
+}
+
 footer {
     font-size: 82.5%;
     margin-top: 5rem;
     margin-bottom: 2rem
 }
 
-footer p {
-    margin-bottom: .5rem;
+
+.flex-container {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.flex-item-1 {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 1 0 calc(100% - 250px);
+    -ms-flex: 1 0 calc(100% - 250px);
+    flex: 1 0 calc(100% - 250px);
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    width: calc(100% - 250px);
+    overflow-x: scroll;
+}
+
+.flex-item-2 {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 0 250px;
+    -ms-flex: 0 0 250px;
+    flex: 0 0 250px;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
 }

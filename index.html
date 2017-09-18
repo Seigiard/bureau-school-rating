@@ -2,29 +2,36 @@
     <head>
         <meta charset="utf-8">
         <title>Рейтинг студентов школы дизайнеров Бюро Горбунова</title>
-        <link rel="stylesheet" href="style.css?201709172223">
+        <link rel="stylesheet" href="style.css?201709100700">
     </head>
-    <body>
-        <h1>Рейтинг студентов школы Бюро Горбунова</h1>
-        <nav>
-            <li><strong>Дизайнеры</strong></li>
-            <li><a href="editors.html">Редакторы</a></li>
-            <li><a href="managers.html">Менеджеры</a></li>
-        </nav>
-        <div id="rating">
-            <div id="chartdiv"></div>
-            <div id="students"></div>
-        </div>
+    <body class="designers">
+        <header>
+            <h1>Рейтинг студентов школы Бюро Горбунова</h1>
+            <nav>
+                <li><strong>Дизайнеры</strong></li>
+                <li><a href="editors.html">Редакторы</a></li>
+                <li><a href="managers.html">Менеджеры</a></li>
+            </nav>
+        </header>
+
+        <aside>
+            <p>Рейтинг вычисляется автоматически на основе <a href="https://docs.google.com/spreadsheets/d/1zRDgo2ycfvTQu_biPDW36zza2Zb5uBRiWnz3DXQPkis/">данных об успеваемости</a> школы Бюро Горбунова.</p>
+            <p>Возможны расхождения с данными на сайте Бюро в случае спорных оценок. Робот не очень умный.</p>
+        </aside>
+
+        <main class='flex-container' id="rating">
+            <div class='flex-item-1'><div id="chartdiv"></div></div>
+            <div class='flex-item-2' id="students"></div>
+        </main>
 
         <footer>
-            <p>Рейтинг вычисляется автоматически на основе <a href="https://docs.google.com/spreadsheets/d/1zRDgo2ycfvTQu_biPDW36zza2Zb5uBRiWnz3DXQPkis/">данных об успеваемости</a> школы Бюро Горбунова.</p>
-            <p>Возможны расхождения с данными на сайте Бюро. Робот не очень умный.</p>
+            <p>Создано и поддерживается студентами школы Бюро.</p>
         </footer>
 
         <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
         <script src="https://www.amcharts.com/lib/3/serial.js"></script>
         <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-        <script src="chart.js?201709172223"></script>
+        <script src="chart.js?201709100700"></script>
         <script>
             loadChart('https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/1/public/values?alt=json');
         </script>
