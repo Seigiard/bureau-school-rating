@@ -200,50 +200,48 @@ function renderCurrentStudents(result) {
 }
 
 function drawChart(data, studentLength) {
-    var chart = AmCharts.makeChart("chartdiv", {
-        "type": "serial",
-        "theme": "light",
-        autoMargins: false,
-        marginTop: chartMargin.top,
-        marginBottom: chartMargin.bottom,
-        marginLeft: chartMargin.left,
-        marginRight: chartMargin.right,
-        "dataProvider": data.values,
-        "valueAxes": [
-            {
-                id: 'current',
-                "axisAlpha": 0,
-                "position": "left",
-                "gridThickness": 0,
-                "axisColor": '#fff',
-                "color": '#ccc',
-                gridCount: studentLength * 2,
-                autoGridCount: false,
-                strictMinMax: true,
-                minimum: 0,
-                maximum: studentLength+1,
-                "labelFunction": position => '', //data.startLabels[position - 1] || '',
-            }
-        ],
-        "categoryAxis": {
-            position: 'top',
-            "axisAlpha": 0.1,
-            "gridThickness": 0,
-        },
-        "graphs": data.graphs,
-        "categoryField": "date",
-        "plotAreaBorderAlpha": 0,
-        "listeners": [
-            {
-                "event": "rendered",
-                "method": () => {
-                    setLineHighlighter(chart);
+    return new Promise((resolve) => {
+        var chart = AmCharts.makeChart("chartdiv", {
+            "type": "serial",
+            "theme": "light",
+            autoMargins: false,
+            marginTop: chartMargin.top,
+            marginBottom: chartMargin.bottom,
+            marginLeft: chartMargin.left,
+            marginRight: chartMargin.right,
+            "dataProvider": data.values,
+            "valueAxes": [
+                {
+                    id: 'current',
+                    "axisAlpha": 0,
+                    "position": "left",
+                    "gridThickness": 0,
+                    "axisColor": '#fff',
+                    "color": '#ccc',
+                    gridCount: studentLength * 2,
+                    autoGridCount: false,
+                    strictMinMax: true,
+                    minimum: 0,
+                    maximum: studentLength+1,
+                    "labelFunction": position => '', //data.startLabels[position - 1] || '',
                 }
-            }
-        ],
-    });
-
-    return { chart };
+            ],
+            "categoryAxis": {
+                position: 'top',
+                "axisAlpha": 0.1,
+                "gridThickness": 0,
+            },
+            "graphs": data.graphs,
+            "categoryField": "date",
+            "plotAreaBorderAlpha": 0,
+            "listeners": [
+                {
+                    "event": "init",
+                    "method": x => resolve({ chart: x.chart })
+                }
+            ],
+        });
+    })
 }
 
 function getSpreadSheet(url) {
@@ -347,15 +345,14 @@ function setLineHighlighter(chart) {
         chart.graphs.sort(graph => graph.id === graphId);
         chart.validateData();
     });
-
-    document.getElementsByClassName('student-list_item')[0].click();
 }
 
 function callAndResolve(func) {
     return function (x) {
-        const result = func(x);
-        const responce = result ? Object.assign(x, result) : x;
-        return Promise.resolve(responce);
+        return Promise.resolve(func(x)).then(result => {
+            const responce = result ? Object.assign(x, result) : x;
+            return Promise.resolve(responce);
+        })
     }
 }
 
@@ -365,5 +362,9 @@ function loadChart(url) {
         .then(parseSpreadSheetData)
         .then(callAndResolve(x => setElementsMeasurements(x.chartMinWidth, x.chartMaxWidth, x.chartHeight)))
         .then(callAndResolve(x => renderCurrentStudents(x.result)))
-        .then(callAndResolve(x => drawChart(x.chartData, x.studentLength)));
+        .then(callAndResolve(x => drawChart(x.chartData, x.studentLength)))
+        .then(callAndResolve(x => setLineHighlighter(x.chart)))
+        .then(callAndResolve(x => {
+            document.getElementsByClassName('student-list_item')[0].click();
+        }));
 }
