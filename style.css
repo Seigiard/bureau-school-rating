@@ -5,6 +5,7 @@
     --linkVisitedUnderlineColor:rgba(85,26,139,.1);
     --keyColor:#e20016;
     --keyUnderlineColor:rgba(226,0,22,.1);
+    --successColor: green;
     --colorRating: #E6EEF2;
     --colorRatingActive: #E6EEF2;
     --colorRatingTotal: #E6EEF2;
@@ -141,6 +142,12 @@ body.managers .student-list_item {
     letter-spacing: -.5px;
     color: var(--keyColor);
     margin-left: .2rem;
+}
+.student-list_item .place-diff_up {
+    color: var(--successColor);
+}
+.student-list_item .place-diff_down {
+    color: var(--keyColor);
 }
 .student-list_item .points small {
     margin-left: .3rem;

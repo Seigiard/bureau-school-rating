@@ -180,12 +180,13 @@ function renderCurrentStudents(result) {
             const currentPoint = currentValues.points.toFixed(2);
             const diffPoints = (currentValues.points - prevValues.points).toFixed(2);
             const arrow = diffPlaces > 0 ? `↑${Math.abs(diffPlaces)}` : (diffPlaces < 0 ? `↓${Math.abs(diffPlaces)}` : ' ');
+            const placeDiffStyle = diffPlaces > 0 ? `place-diff_up` : (diffPlaces < 0 ? `place-diff_down` : ' ');
             total.push(`<div class='student-list_item' data-id='${x.id}'>
                 <h2>
                     <span class='place'>${currentValues.place}.</span>
                     <span class="student-percentage" style="background-size:${100-currentValues.percentage_points}% 2px;">
                         <span class="student-name">${x.name}</span>
-                        <span class='place-diff'>${arrow}</span>
+                        <span class='place-diff ${placeDiffStyle}'>${arrow}</span>
                     </span>
                 </h2>
                 <p>
