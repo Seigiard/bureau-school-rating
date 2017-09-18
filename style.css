@@ -106,7 +106,7 @@ body.managers .student-list_item {
     background-image: none;
     font-weight: bold;
 }
-.student-list_item:hover h2 .student-percentage {
+.student-list_item h2 .student-percentage {
     cursor: pointer;
     display: inline-block;
     width: calc(250px - 2rem);
