@@ -76,20 +76,6 @@ function getChartGraphs(charts) {
             return result;
         }
 
-        // result.push({
-        //     "valueAxis": 'start',
-        //     "id": `gStart${id}`,
-        //     "balloonText": ``,
-        //     "type": "smoothedLine",
-        //     "lineThickness": 0,
-        //     "lineAlpha": 0,
-        //     "bullet": "round",
-        //     "bulletAlpha": 0,
-        //     "bulletSize": 0,
-        //     "bulletBorderAlpha": 0,
-        //     "valueField": `place_chart_${id}`
-        // });
-
         result.push({
             "valueAxis": 'current',
             "id": `gCurrent${id}`,
@@ -198,6 +184,56 @@ function renderCurrentStudents(result) {
         .join('');
 
     el.appendChild(htmlToElement(`<div class='student-list'>${list}</div>`));
+}
+
+function renderStatistics(result) {
+    const el = document.getElementById('stats');
+    const lastValueId = result[0].values.length - 1;
+    const list = result
+        .slice(1)
+        .map((x) => {
+            const currentValues = x.values[lastValueId];
+            const prevValues = x.values[lastValueId - 1];
+            const diffPlaces = (currentValues.place - prevValues.place) * -1;
+            const diffPoints = (currentValues.points - prevValues.points).toFixed(2);
+            return {
+                name: x.name,
+                place: x.values[lastValueId].place,
+                places: x.values.map(x => x.place),
+                diffPlaces,
+                diffPoints
+            }
+        })
+
+        list.sort((a, b) => a.place - b.place);
+        const leader = list.slice(0,1)[0];
+        const leaderWeeks = leader.places.reverse().join('').match(/^1+/)[0].length;
+
+        list.sort((a, b) => b.diffPlaces - a.diffPlaces);
+        const topUp = list[0].diffPlaces;
+        const topScore = list.sort((a, b) => b.diffPoints - a.diffPoints).slice(0, 5).map(x => `${x.name} <em>+${x.diffPoints}</em>`).join(',<br />');
+
+        el.appendChild(htmlToElement(`<dl>
+            <dt>Лидер недели</dt><dd>${leader.name} <em>${leaderWeeks} ${pluralize(leaderWeeks, ['неделя', 'недели', 'недель'])}</em></dd>
+            <dt>Взлёт недели</dt><dd>${getNamesByPlace(list, topUp)} <em>+${topUp} ${pluralize(topUp, ['место', 'места', 'мест'])}</em></dd>
+            <dt>Умники недели</dt><dd>${topScore}</dd>
+        </dl>
+        `));
+}
+
+function getNamesByPlace(results, place) {
+    return results.filter(x => x.diffPlaces === place).map(x => x.name).join(', ');
+}
+
+/**
+ * Plural forms for russian words
+ * @param  {Integer} count quantity for word
+ * @param  {Array} words Array of words. Example: ['депутат', 'депутата', 'депутатов'], ['коментарий', 'коментария', 'комментариев']
+ * @return {String}        Count + plural form for word
+ */
+function pluralize(count, words) {
+    var cases = [2, 0, 1, 1, 1, 2];
+    return words[ (count % 100 > 4 && count % 100 < 20) ? 2 : cases[ Math.min(count % 10, 5)] ];
 }
 
 function drawChart(data, studentLength) {
@@ -363,6 +399,7 @@ function loadChart(url) {
         .then(parseSpreadSheetData)
         .then(callAndResolve(x => setElementsMeasurements(x.chartMinWidth, x.chartMaxWidth, x.chartHeight)))
         .then(callAndResolve(x => renderCurrentStudents(x.result)))
+        .then(callAndResolve(x => renderStatistics(x.result)))
         .then(callAndResolve(x => drawChart(x.chartData, x.studentLength)))
         .then(callAndResolve(x => setLineHighlighter(x.chart)))
         .then(callAndResolve(x => {

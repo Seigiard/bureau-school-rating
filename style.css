@@ -160,6 +160,22 @@ aside {
     margin-bottom: 3rem;
 }
 
+#stats {
+    margin-bottom: 2rem;
+}
+#stats dt {
+    margin: 0 0 .3rem 0;
+    font-weight: 600;
+}
+#stats dd {
+    margin-bottom: 1rem;
+}
+#stats dd em {
+    font-family: PT Serif, serif;
+    margin-left: .3rem;
+    font-size: 82.5%;
+}
+
 footer {
     font-size: 82.5%;
     margin-top: 5rem;
