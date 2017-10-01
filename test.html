@@ -132,7 +132,7 @@
             function submit(e) {
                 body.classList.add('done');
 
-                const validResultsAmount = getRandomInt(0, results.length-1);
+                const validResultsAmount = getRandomInt(0, results.length-2);
                 const totalPoints = round(getRandom(9, 15) * results.length);
                 const validPoints = round(getRandom(5, 12) * validResultsAmount || getRandom(0, 1));
 
