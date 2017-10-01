@@ -1,0 +1,238 @@
+body {
+    padding: 0 6%;
+    margin: 0;
+    min-width: 960px;
+    font-family: Verdana, Arial, "sans-serif bold"
+}
+h2 {
+    margin: 3.2em 0 0.26em;
+    width: 52%;
+    font: bold 1em Verdana, Arial, "sans-serif bold"
+}
+h3 {
+    margin: 2.6em 0 0;
+    font: bold 1em Verdana, Arial, "sans-serif bold";
+}
+header {
+    display: flex;
+    margin: 10px 0;
+}
+header > h1 {
+    flex: 1 1 auto;
+    margin: 0;
+    padding: 0;
+}
+header > nav {
+    flex: 0 0 auto;
+}
+
+#test {
+    width: 100%;
+    display: flex;
+}
+#test main {
+    flex: 0 1 auto;
+    margin-right: 6%;
+}
+#test aside {
+    flex: 0 0 22%;
+    width: 22%;
+    max-width: 22%;
+    margin-top: 38px;
+}
+
+section {
+    font: 0.8em/1.3em Verdana, Arial, sans-serif;
+}
+
+section ul {
+    margin: 0 0 2.6em;
+    padding: 0;
+    list-style-type: none;
+}
+section ul li {
+    position: relative;
+    cursor: pointer;
+    margin: 0 0 0 1em;
+    padding: 0;
+}
+section ul li input {
+    display: none;
+}
+section ul li label {
+    cursor: pointer;
+    display: block;
+    padding: 9px 0 4px;
+}
+.done section ul li label {
+    pointer-events: none;
+}
+
+footer {
+    font: 0.8em/1.3em Verdana, Arial, sans-serif;
+    margin: 50px 0;
+}
+
+/* line 1395, scss/bezborody.dev.scss */
+.button-simple, #sendEmail {
+    padding: 3px 12px;
+    border: 1px solid #c0c0c0;
+    border-color: #eaeaea silver #707070 silver;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 13px;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fff0be), color-stop(100%, #ead6aa));
+    background: -webkit-linear-gradient(top, #fff0be, #ead6aa);
+    background: -moz-linear-gradient(top, #fff0be, #ead6aa);
+    background: -o-linear-gradient(top, #fff0be, #ead6aa);
+    background: -ms-linear-gradient(top, #fff0be, #ead6aa);
+    background: linear-gradient(top, #fff0be, #ead6aa);
+    background: #f4e3b4;
+    text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);
+    -moz-transition-duration: 0.1s;
+    -webkit-transition-duration: 0.1s;
+    -o-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+  }
+  /* line 1405, scss/bezborody.dev.scss */
+  .button-simple:hover, #sendEmail:hover {
+    background: #f8e9ba;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fff5c4), color-stop(100%, #f1ddb0));
+    background: -webkit-linear-gradient(top, #fff5c4, #f1ddb0);
+    background: -moz-linear-gradient(top, #fff5c4, #f1ddb0);
+    background: -o-linear-gradient(top, #fff5c4, #f1ddb0);
+    background: -ms-linear-gradient(top, #fff5c4, #f1ddb0);
+    background: linear-gradient(top, #fff5c4, #f1ddb0);
+  }
+  /* line 1409, scss/bezborody.dev.scss */
+  .button-simple:active, #sendEmail:active {
+    border-color: silver;
+    color: #000000;
+    background: -moz-linear-gradient(top, #fff0be, #ead6aa);
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fff0be), color-stop(100%, #ead6aa));
+    background: -webkit-linear-gradient(top, #fff0be, #ead6aa);
+    background: linear-gradient(top, #fff0be, #ead6aa);
+    background: -o-linear-gradient(top, #fff0be, #ead6aa);
+    background: -ms-linear-gradient(top, #fff0be, #ead6aa);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+  }
+  /* line 1416, scss/bezborody.dev.scss */
+  .button-simple[disabled], #sendEmail[disabled] {
+    opacity: 0.7;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+  /* line 1417, scss/bezborody.dev.scss */
+  .button-simple[disabled]:hover, #sendEmail[disabled]:hover {
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fff0be), color-stop(100%, #ead6aa));
+    background: -webkit-linear-gradient(top, #fff0be, #ead6aa);
+    background: -moz-linear-gradient(top, #fff0be, #ead6aa);
+    background: -o-linear-gradient(top, #fff0be, #ead6aa);
+    background: -ms-linear-gradient(top, #fff0be, #ead6aa);
+    background: linear-gradient(top, #fff0be, #ead6aa);
+  }
+  /* line 1420, scss/bezborody.dev.scss */
+  .button-simple[disabled]:active, #sendEmail[disabled]:active {
+    border-color: #eaeaea silver #707070 silver;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+#result button:disabled {
+    display: inline-block;
+}
+#result button:not(:disabled) {
+    display: none;
+}
+.valid #result button:not(:disabled) {
+    display: inline-block;
+}
+.valid #result button:disabled {
+    display: none;
+}
+
+.question.is__incorrect .choise::after {
+    background-color: rgba(227, 0, 22,0.2) !important;
+}
+.choise::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    height: 1px;
+    background: rgba(0,0,0,0.2);
+    content: '';
+}
+
+.choise input:checked + label::before {
+    content: '✔︎';
+}
+.choise label::before {
+    position: absolute;
+    margin-left: -1em;
+}
+
+.is__incorrect
+{
+    color: #e30016;
+}
+
+.is__incorrect .choise::after
+{
+    background-color: rgba(227, 0, 22,0.2) !important;
+}
+
+.factoid {
+    font-family: PT Sans;
+}
+.factoid .digits {
+    font-size: 56px;
+    line-height: 60px;
+    letter-spacing: -2px;
+}
+
+.factoid .comment {
+    font-size: 16px;
+    margin-top: -5px;
+    line-height: 17px;
+}
+
+.help {
+    display: none;
+    font: 0.8em/1.3em Verdana, Arial, sans-serif;
+}
+.done .help {
+    display: block;
+}
+.help input {
+    display: none;
+}
+.help label {
+    color: #065580;
+    border-bottom: 1px dashed #821388;
+}
+.help label:hover {
+    color: #065580;
+    border-bottom: 1px solid #821388;
+}
+.help input:checked + label {
+    color: #000;
+    font-weight: bold;
+    border-bottom: none;
+}
+.help div {
+    display: none;
+}
+.help input:checked + label + div {
+    display: block;
+}

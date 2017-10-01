@@ -1,0 +1,150 @@
+<html lang="ru">
+    <head>
+        <!-- Global Site Tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106619350-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments)};
+            gtag('js', new Date());
+
+            gtag('config', 'UA-106619350-1');
+        </script>
+        <meta charset="utf-8">
+        <title>Симулятор тестов для студентов школы Бюро Горбунова</title>
+        <link rel="stylesheet" href="test.css?201709251215">
+    </head>
+    <body>
+        <header>
+            <h1><a href="index.html"><img src="menu.png" alt="Меню" width="750" /></a></h1>
+            <nav>
+                <a href="index.html"><a href="index.html"><img src="user-menu.png" alt="Меню студента" width="125" /></a></a>
+            </nav>
+        </header>
+        <h2>Тест «Теория напряжённости и взаимодействия. Общая теория относительности в дизайне. Сфера Шварцшильда»</h2>
+        <div id="test">
+            <main>
+                <section>
+                    <h3>В чём главный смысл теории напряжённости и взаимодействия?</h3>
+                    <ul>
+                        <li class="choise"><input type="checkbox" id='q1' /><label for="q1">Напряжён — взаимодействуй</label></li>
+                        <li class="choise"><input type="checkbox" id='q2' /><label for="q2">Напряжённый субъект всегда воздействует на объект</label></li>
+                        <li class="choise"><input type="checkbox" id='q3' /><label for="q3">Объёкт воздействия обратно пропорционален напряжению</label></li>
+                        <li class="choise"><input type="checkbox" id='q4' /><label for="q4">Взаимодействие порождает напряжение</label></li>
+                        <li class="choise"><input type="checkbox" id='q5' /><label for="q5">Поле напряжения распределяется прямо пропорционально взаимодействию объектов</label></li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Как воздействуют друг на друга текст и заголовок согласно общей теории относительности?</h3>
+                    <ul>
+                        <li class="choise"><input type="checkbox" id='q11' /><label for="q11">Заголовок нарушает интерлиньяж текста на квантовом уровне</label></li>
+                        <li class="choise"><input type="checkbox" id='q12' /><label for="q12">Текст притягивает к себе заголовок основываясь на теории поля</label></li>
+                        <li class="choise"><input type="checkbox" id='q13' /><label for="q13">Объекты занимают положение пропорциональное их весу относительно якорной точки</label></li>
+                        <li class="choise"><input type="checkbox" id='q14' /><label for="q14">Постоянная Планка увеличивает кернинг заголовка обратно пропорционально удалению текста</label></li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Сфера Шварцшильда для базовых элементов верстки — это</h3>
+                    <ul>
+                        <li class="choise"><input type="checkbox" id='q21' /><label for="q21">Характерный радиус, определённый для любого графического объекта, обладающего массой</label></li>
+                        <li class="choise"><input type="checkbox" id='q22' /><label for="q22">Главный принцип дизайна</label></li>
+                        <li class="choise"><input type="checkbox" id='q23' /><label for="q23">Угол смещения якорных точек относительно горизонта взгляда пользователя</label></li>
+                        <li class="choise"><input type="checkbox" id='q24' /><label for="q24">Предел воздействия закона Фиттса на контролы в форме</label></li>
+                        <li class="choise"><input type="checkbox" id='q25' /><label for="q25">Неотчуждаемое право элементов на самоопределение с поправкой на гравитацию</label></li>
+                    </ul>
+                </section>
+            </main>
+            <aside>
+                <div class="factoid" id="factoid">
+                    <div class="digits" id="digits"></div>
+                    <div class="comment" id="comment"></div>
+                </div>
+            </aside>
+        </div>
+        <footer>
+            <p id="result"><button class="button-simple" onClick="submit();">Отправить</button><button class="button-simple" disabled>Отправить</button></p>
+        </footer>
+
+        <div class="help">
+            <input type="checkbox" id="help">
+            <label for="help">Психологическая помощь</label>
+            <div>
+                <p>Проверьте свои эмоции по шкале принятия и <a href="test.html">пройдите тест заново</a>.</p>
+                <img src="testmeter.jpg" alt="">
+            </div>
+        </div>
+
+        <footer>
+            <hr>
+            <p><small>Создано и поддерживается студентами школы бюро при помощи <a href="https://t.me/koteilluminati" target=_blank>котов-иллюминатов</a>.</small></p>
+        </footer>
+
+        <script>
+            function $(selector){
+                return document.querySelector(selector);
+            }
+            function $$(selector, parent){
+                if(typeof parent === 'undefined') {
+                    parent = document;
+                }
+                return Array.prototype.slice.call(parent.querySelectorAll(selector));
+            }
+            function round(value, decimals) {
+                if(typeof decimals === 'undefined') {
+                    decimals = 2;
+                }
+                return Number(Math.round(value+'e'+decimals)+'e-'+decimals).toString();
+            }
+            function getRandom(min, max) {
+                return round(Math.random() * (max - min) + min, 2);
+            }
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1) + min);
+            }
+            function getRandomValues(arr, count){
+                var result = [];
+                var _tmp = arr.slice();
+                for(var i = 0; i < count; i++){
+                    var index = Math.ceil(Math.random() * 10) % _tmp.length;
+                    result.push(_tmp.splice(index, 1)[0]);
+                }
+                return result;
+            }
+
+            const body = $('body');
+            const resultText = $('#result');
+            const digits = $('#digits');
+            const comment = $('#comment');
+            const results = $$('section');
+
+            function isValid() {
+                setTimeout(() => {
+                    const selected = $$('section').filter(el => $$('input:checked', el).length).length;
+                    if(selected === results.length){
+                        body.classList.add('valid');
+                    } else {
+                        body.classList.remove('valid');
+                    }
+                }, 200);
+            }
+
+            $$('section label').forEach(x => x.addEventListener('click', isValid));
+
+            function submit(e) {
+                body.classList.add('done');
+
+                const validResultsAmount = getRandomInt(0, results.length-1);
+                const totalPoints = round(getRandom(9, 15) * results.length);
+                const validPoints = round(getRandom(5, 12) * validResultsAmount || getRandom(0, 1));
+
+                const invalidAnswers = getRandomValues(results, results.length-validResultsAmount);
+                invalidAnswers.forEach(el => {
+                    el.classList.add('is__incorrect');
+                });
+
+                resultText.innerHTML = `Вы правильно ответили на&nbsp;${validResultsAmount}&nbsp;вопросов&nbsp;из&nbsp;${results.length}, успели к&nbsp;дедлайну и&nbsp;заработали <b>${validPoints}&nbsp;балла</b> из&nbsp;<b>${totalPoints}</b>.`;
+                digits.innerHTML = `${validPoints}`;
+                comment.innerHTML = `балла из ${totalPoints}`;
+            }
+        </script>
+    </body>
+</html>
