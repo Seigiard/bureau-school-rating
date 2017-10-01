@@ -38,6 +38,9 @@ nav li strong {
 nav li + li {
     margin-left: .5rem;
 }
+nav li + li.out-menu {
+    margin-left: 3rem;
+}
 a, a:visited, .link {
     background-image: linear-gradient(180deg,var(--linkUnderlineColor) 0,var(--linkUnderlineColor));
     background-repeat: repeat-x;
