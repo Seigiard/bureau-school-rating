@@ -1,6 +1,10 @@
 # Как поменять порядок недель в кабинете
 
-Поставьте [Стайлиш](https://chrome.google.com/webstore/detail/stylish-custom-themes-for/fjnbnpbmkenffdnngjfgmeleoegfcffe?hl=en-US) для Хрома.
+Поставьте Стайлиш
+
+* для [Хрома, Оперы или Яндекс.Браузера](https://chrome.google.com/webstore/detail/stylish-custom-themes-for/fjnbnpbmkenffdnngjfgmeleoegfcffe?hl=en-US)
+* [Сафари](https://safari-extensions.apple.com/details/?id=com.sobolev.stylish-5555L95H45)
+* или [Файрфокса](https://addons.mozilla.org/en-US/firefox/addon/stylish/).
 
 Создайте новое правило и впишите туда стиль:
 
