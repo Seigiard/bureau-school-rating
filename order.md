@@ -1,7 +1,6 @@
 # Как поменять порядок недель в кабинете
 
-Поставьте Стайлиш:
-https://chrome.google.com/webstore/detail/stylish-custom-themes-for/fjnbnpbmkenffdnngjfgmeleoegfcffe?hl=en-US
+Поставьте [Стайлиш](https://chrome.google.com/webstore/detail/stylish-custom-themes-for/fjnbnpbmkenffdnngjfgmeleoegfcffe?hl=en-US) для Хрома.
 
 Создайте новое правило и впишите туда стиль:
 
@@ -21,4 +20,8 @@ https://chrome.google.com/webstore/detail/stylish-custom-themes-for/fjnbnpbmkenf
         order: 2;
     }
 
-Applies to URLs starting with: «http://bureau.ru/school/classroom»
+Выберите настройку
+
+    Applies to URLs starting with: «http://bureau.ru/school/classroom»
+
+Сохраните. Наслаждайтесь.
