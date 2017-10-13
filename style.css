@@ -232,3 +232,11 @@ footer {
     -ms-flex-item-align: auto;
     align-self: auto;
 }
+
+.poem {
+    max-width: 500px;
+    display: none;
+}
+.poem img {
+    width: 100%;
+}
