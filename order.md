@@ -8,20 +8,13 @@
 
 Создайте новое правило и впишите туда стиль:
 
-    body .pageTitle + div {
+    body .classroom .pageTitle + div {
         flex-direction: column-reverse;
         display: flex;
     }
 
-    body .curriculumWeek {
+    body .classroom .curriculumWeek {
         margin: 54px 0 0 0;
-    }
-
-    body .pageTitle {
-        order: 1;
-    }
-    body .product {
-        order: 2;
     }
 
 Выберите настройку
