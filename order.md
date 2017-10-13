@@ -8,7 +8,7 @@
 
 Создайте новое правило и впишите туда стиль:
 
-    body .webpage {
+    body .pageTitle + div {
         flex-direction: column-reverse;
         display: flex;
     }
