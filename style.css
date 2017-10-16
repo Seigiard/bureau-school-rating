@@ -1,14 +1,12 @@
 :root {
     --linkColor:#065580;
-    --linkUnderlineColor:rgba(6,85,128,.1);
-    --linkVisitedColor:#821388;
-    --linkVisitedUnderlineColor:rgba(85,26,139,.1);
+    --linkUnderlineColor:#C8D5DE; /*rgba(6,85,128,.25);*/
     --keyColor:#e20016;
-    --keyUnderlineColor:rgba(226,0,22,.1);
+    --keyUnderlineColor:rgba(226,0,22,.25);
     --successColor: green;
-    --colorRating: #E6EEF2;
-    --colorRatingActive: #E6EEF2;
-    --colorRatingTotal: #E6EEF2;
+    --colorRating: #C8D5DE;
+    --colorRatingActive: #C8D5DE;
+    --colorRatingTotal: #C8D5DE;
     --colorTransparent:rgba(0,0,0,0);
 }
 html {
@@ -251,6 +249,43 @@ footer {
 .poem img {
     width: 100%;
 }
+
+.scrollbox {
+    background:
+        radial-gradient(farthest-side at 0% 50%, rgba(0,0,0,.2), rgba(0,0,0,0)),
+        radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), rgba(0,0,0,0));
+
+	background-repeat: no-repeat;
+    background-color: transparent;
+    background-position:
+        left center,
+        right center;
+    background-size:
+        10px 130%,
+        10px 130%;
+
+	/* Opera doesn't support this in the shorthand */
+	background-attachment: scroll, scroll;
+}
+
+.scrollbox-container {
+    background:
+        linear-gradient(to right, white 30%, rgba(255,255,255,0)),
+        linear-gradient(to left, white 30%, rgba(255,255,255,0));
+
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position:
+        left center,
+        right center;
+    background-size:
+        30px 100%,
+        30px 100%;
+
+    /* Opera doesn't support this in the shorthand */
+    background-attachment: scroll, scroll;
+}
+
 
 @media only screen and (max-width: 640px) {
     html {

@@ -404,5 +404,6 @@ function loadChart(url) {
         .then(callAndResolve(x => setLineHighlighter(x.chart)))
         .then(callAndResolve(x => {
             document.getElementsByClassName('student-list_item')[0].click();
+            document.getElementsByClassName('flex-item-1')[0].scrollTo(100000, 0);
         }));
 }
