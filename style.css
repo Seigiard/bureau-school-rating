@@ -11,11 +11,20 @@
     --colorRatingTotal: #E6EEF2;
     --colorTransparent:rgba(0,0,0,0);
 }
+html {
+    font-size: 16px;
+}
 body {
     background: #fff;
     margin:0;
     padding:2rem 2rem 3rem 4rem;
     font-family: PT Sans, sans-serif;
+}
+.topinfo {
+    margin: -2rem -2rem 3rem -4rem;
+    padding: .5rem 2rem .4rem 4rem;
+    font-size: .82rem;
+    background: #F9DD75;
 }
 h1 {
     font-weight: normal;
@@ -38,8 +47,8 @@ nav li strong {
 nav li + li {
     margin-left: .5rem;
 }
-nav li + li.out-menu {
-    margin-left: 3rem;
+nav li + li.separator {
+    width: 2rem;
 }
 a, a:visited, .link {
     background-image: linear-gradient(180deg,var(--linkUnderlineColor) 0,var(--linkUnderlineColor));
@@ -218,6 +227,7 @@ footer {
     -ms-flex-item-align: auto;
     align-self: auto;
     width: calc(100% - 250px);
+    min-width: 300px;
     overflow-x: scroll;
 }
 
@@ -231,6 +241,7 @@ footer {
     -webkit-align-self: auto;
     -ms-flex-item-align: auto;
     align-self: auto;
+    min-width: 250px;
 }
 
 .poem {
@@ -239,4 +250,33 @@ footer {
 }
 .poem img {
     width: 100%;
+}
+
+@media only screen and (max-width: 640px) {
+    html {
+        font-size: 14px;
+    }
+
+    body {
+        background: #fff;
+        margin:0;
+        padding:1rem 1rem 2rem 2rem;
+        font-family: PT Sans, sans-serif;
+    }
+    .topinfo {
+        margin: -1rem -1rem 2rem -2rem;
+        padding: .5rem 1rem .4rem 2rem;
+        font-size: .82rem;
+        background: #F9DD75;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    nav li.separator {
+        display: block;
+        height: .4rem;
+    }
+    nav li.separator + li {
+        margin-left:0;
+    }
 }
