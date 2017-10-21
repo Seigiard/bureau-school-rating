@@ -21,8 +21,12 @@ body {
 .topinfo {
     margin: -2rem -2rem 3rem -4rem;
     padding: .5rem 2rem .4rem 4rem;
-    font-size: .82rem;
-    background: #F9DD75;
+    font-size: .90rem;
+    background: #FAECBB;
+}
+.topinfo a {
+    display: inline-block;
+    line-height: 1.4em;
 }
 h1 {
     font-weight: normal;
