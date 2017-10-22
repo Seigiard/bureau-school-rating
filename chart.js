@@ -24,7 +24,9 @@ function parseData(total, row, id) {
 }
 
 function prepareChart(student, id) {
-    if (id === 0) { return student; }
+    if (id === 0) {
+        return student;
+    }
 
     const values = [];
 
@@ -48,12 +50,17 @@ function getChartData(result, studentLength) {
 
     const values = getChartValues(charts);
 
-    const graphs = getChartGraphs(charts);
+    const graphs = getChartGraphs(charts, result);
 
     const currentLabels = getCurrentResultLabels(result, studentLength);
-    const startLabels = getStartResultLabels(result, studentLength);
+    // const startLabels = getStartResultLabels(result, studentLength);
 
-    return { values, graphs, currentLabels, startLabels };
+    return {
+        values,
+        graphs,
+        currentLabels,
+        // startLabels
+    };
 }
 
 function getChartValues(charts) {
@@ -70,7 +77,7 @@ function getChartValues(charts) {
     }, {}))
 }
 
-function getChartGraphs(charts) {
+function getChartGraphs(charts, students) {
     return charts[charts.length - 1].reduce((result, x, id) => {
         if (id === 0) {
             return result;
@@ -79,7 +86,8 @@ function getChartGraphs(charts) {
         result.push({
             "valueAxis": 'current',
             "id": `gCurrent${id}`,
-            "balloonText": `<b>[[place_${id}]]</b><br />[[points_${id}]]`,
+            "studentId": students[id].id,
+            "balloonText": `<span class="student">[[place_${id}]]. ${students[id].name}</span><br /><span class="points">[[points_${id}]]</span>`,
             "type": "smoothedLine",
             "lineThickness": x.place <= 30 ? 1 : 1,
             "originalLineThickness": x.place <= 30 ? 1 : 1,
@@ -88,6 +96,8 @@ function getChartGraphs(charts) {
             "bullet": "round",
             "bulletAlpha": x.place <= 30 ? 1 : .5,
             "bulletSize": 2,
+            "originalBulletSize": 2,
+            "bulletHitAreaSize": 20,
             "bulletBorderAlpha": 0,
             "valueField": `place_chart_${id}`
         });
@@ -119,10 +129,11 @@ function getStartResultLabels(result, studentLength) {
             place: x.values[0].place
         }))
         .sort((a, b) => a.place - b.place)
-        .map((x, id) => Object.assign({}, x, { place: id + 1 }))
+        .map((x, id) => Object.assign({}, x, {
+            place: id + 1
+        }))
         .reduce((total, x) => {
             const place = studentLength - x.place;
-            // console.error(x.place,place, x.name);
             total[place] = `${x.place}. ${x.name}`;
             return total;
         }, [])
@@ -205,15 +216,15 @@ function renderStatistics(result) {
             }
         })
 
-        list.sort((a, b) => a.place - b.place);
-        const leader = list.slice(0,1)[0];
-        const leaderWeeks = leader.places.reverse().join('').match(/^1+/)[0].length;
+    list.sort((a, b) => a.place - b.place);
+    const leader = list.slice(0, 1)[0];
+    const leaderWeeks = leader.places.reverse().join('').match(/^1+/)[0].length;
 
-        list.sort((a, b) => b.diffPlaces - a.diffPlaces);
-        const topUp = list[0].diffPlaces;
-        const topScore = list.sort((a, b) => b.diffPoints - a.diffPoints).slice(0, 5).map(x => `${x.name} <em>+${x.diffPoints}</em>`).join(',<br />');
+    list.sort((a, b) => b.diffPlaces - a.diffPlaces);
+    const topUp = list[0].diffPlaces;
+    const topScore = list.sort((a, b) => b.diffPoints - a.diffPoints).slice(0, 5).map(x => `${x.name} <em>+${x.diffPoints}</em>`).join(',<br />');
 
-        el.appendChild(htmlToElement(`<dl>
+    el.appendChild(htmlToElement(`<dl>
             <dt>Лидер недели</dt><dd>${leader.name} <em>${leaderWeeks} ${pluralize(leaderWeeks, ['неделя', 'недели', 'недель'])}</em></dd>
             <dt>Взлёт недели</dt><dd>${getNamesByPlace(list, topUp)} <em>+${topUp} ${pluralize(topUp, ['место', 'места', 'мест'])}</em></dd>
             <dt>Умники недели</dt><dd>${topScore}</dd>
@@ -233,7 +244,7 @@ function getNamesByPlace(results, place) {
  */
 function pluralize(count, words) {
     var cases = [2, 0, 1, 1, 1, 2];
-    return words[ (count % 100 > 4 && count % 100 < 20) ? 2 : cases[ Math.min(count % 10, 5)] ];
+    return words[(count % 100 > 4 && count % 100 < 20) ? 2 : cases[Math.min(count % 10, 5)]];
 }
 
 function drawChart(data, studentLength) {
@@ -247,26 +258,43 @@ function drawChart(data, studentLength) {
             marginLeft: chartMargin.left,
             marginRight: chartMargin.right,
             "dataProvider": data.values,
-            "valueAxes": [
-                {
-                    id: 'current',
-                    "axisAlpha": 0,
-                    "position": "left",
-                    "gridThickness": 0,
-                    "axisColor": '#fff',
-                    "color": '#ccc',
-                    gridCount: studentLength * 2,
-                    autoGridCount: false,
-                    strictMinMax: true,
-                    minimum: 0,
-                    maximum: studentLength+1,
-                    "labelFunction": position => '', //data.startLabels[position - 1] || '',
-                }
-            ],
+            "chartCursor": {
+                "oneBalloonOnly": true,
+                cursorAlpha: 0.2,
+                leaveCursor: true,
+                fullWidth: false,
+                zoomable: false,
+            },
+            "valueAxes": [{
+                id: 'current',
+                "axisAlpha": 0,
+                "position": "left",
+                "gridThickness": 0,
+                "axisColor": '#fff',
+                "color": '#ccc',
+                gridCount: studentLength * 2,
+                autoGridCount: false,
+                strictMinMax: true,
+                minimum: 0,
+                maximum: studentLength + 1,
+                "labelFunction": position => '',
+                "listeners": [{
+                    "event": "changed",
+                    "method": x => resolve({
+                        chart: x.chart
+                    })
+                }],
+            }],
             "categoryAxis": {
                 position: 'top',
                 "axisAlpha": 0.1,
                 "gridThickness": 0,
+                "listeners": [
+                    {
+                        "event": "clickItem",
+                        "method": x => x.chart.chartCursor.showCursorAt(x.value)
+                    },
+                ],
             },
             "graphs": data.graphs,
             "categoryField": "date",
@@ -274,8 +302,14 @@ function drawChart(data, studentLength) {
             "listeners": [
                 {
                     "event": "init",
-                    "method": x => resolve({ chart: x.chart })
-                }
+                    "method": x => resolve({
+                        chart: x.chart
+                    })
+                },
+                {
+                    "event": "clickGraph",
+                    "method": x => highlightStudentAndGraphById(x.graph.studentId, x.chart)
+                },
             ],
         });
     })
@@ -327,7 +361,7 @@ function setElementsMeasurements(chartMinWidth, chartMaxWidth, chartHeight) {
 }
 
 function findAncestor(el, cls) {
-    if(el.classList.contains(cls)) {
+    if (el.classList.contains(cls)) {
         return el;
     }
     while ((el = el.parentElement) && !el.classList.contains(cls));
@@ -337,7 +371,9 @@ function findAncestor(el, cls) {
 function getSiblings(originalEl) {
     var siblings = [];
     let el = originalEl.parentNode.firstChild;
-    do { if (!el !== originalEl) siblings.push(el); } while (el = el.nextSibling);
+    do {
+        if (!el !== originalEl) siblings.push(el);
+    } while (el = el.nextSibling);
     return siblings;
 }
 
@@ -349,38 +385,49 @@ function sortObjectByFunction(o, sortFunction) {
     return Object.keys(o).sort(sortFunction).reduce((r, k) => (r[k] = o[k], r), {});
 }
 
-function setLineHighlighter(chart) {
+function highlightStudentAndGraphById(id, chart){
+    highlightStudentInListById(Number(id));
+    highlightGraphById(Number(id), chart);
+}
+
+function highlightStudentInListById(id) {
     const container = document.getElementsByClassName('student-list')[0];
     const studentItems = [...container.childNodes];
 
+    studentItems.forEach(i => {
+        if (id === Number(i.dataset.id)) {
+            i.classList.add('active');
+        } else {
+            i.classList.remove('active');
+        }
+    })
+}
+
+function highlightGraphById(id, chart) {
+    let graphId = 'gCurrent' + id;
+
+    chart.graphs.forEach(graph => {
+        if (graph.valueAxis.id !== 'current') {
+            return;
+        }
+        const isActiveGraph = graph.id === graphId
+        graph.lineThickness = isActiveGraph ? 4 : graph.originalLineThickness;
+        graph.lineAlpha = isActiveGraph ? 1 : graph.originalLineAlpha;
+        graph.bulletSize = isActiveGraph ? 6 : graph.originalBulletSize;
+    });
+    chart.graphs.sort(graph => graph.id === graphId);
+    chart.validateData();
+}
+
+function setLineHighlighter(chart) {
+    const container = document.getElementsByClassName('student-list')[0];
     container.addEventListener('click', e => {
         var el = findAncestor(e.target, 'student-list_item');
-        if (!el) { return; }
-
-        studentItems.forEach(i => {
-            if(i === el) {
-                i.classList.toggle('active');
-            } else {
-                i.classList.remove('active');
-            }
-        })
-
-        let graphId = 'gCurrent' + el.dataset.id;
-
-        if(!el.classList.contains('active')) {
-            graphId = '_und';
+        if (!el) {
+            return;
         }
 
-        chart.graphs.forEach(graph => {
-            if(graph.valueAxis.id !== 'current') {
-                return;
-            }
-            const isActiveGraph = graph.id === graphId
-            graph.lineThickness = isActiveGraph ? 4 : graph.originalLineThickness;
-            graph.lineAlpha = isActiveGraph ? 1 : graph.originalLineAlpha;
-        });
-        chart.graphs.sort(graph => graph.id === graphId);
-        chart.validateData();
+        highlightStudentAndGraphById(el.dataset.id, chart);
     });
 }
 

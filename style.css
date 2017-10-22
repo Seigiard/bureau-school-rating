@@ -319,3 +319,17 @@ footer {
         margin-left:0;
     }
 }
+
+.amcharts-balloon-div:not(.amcharts-balloon-div-categoryAxis) div {
+    text-align: left!important;
+    font-size:1rem!important;
+}
+
+.amcharts-balloon-div:not(.amcharts-balloon-div-categoryAxis) div .student {
+    font-family: PT Sans, sans-serif!important;
+}
+
+.amcharts-balloon-div:not(.amcharts-balloon-div-categoryAxis) div .points {
+    font-family: PT Serif, serif!important;
+    font-size: .82em!important;
+}
