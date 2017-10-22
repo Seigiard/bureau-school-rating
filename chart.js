@@ -282,12 +282,6 @@ function drawChart(data, studentLength) {
                 position: 'top',
                 "axisAlpha": 0.1,
                 "gridThickness": 0,
-                "listeners": [
-                    {
-                        "event": "clickItem",
-                        "method": x => x.chart.chartCursor.showCursorAt(x.value)
-                    },
-                ],
             },
             "graphs": data.graphs,
             "categoryField": "date",
