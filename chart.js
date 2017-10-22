@@ -258,13 +258,6 @@ function drawChart(data, studentLength) {
             marginLeft: chartMargin.left,
             marginRight: chartMargin.right,
             "dataProvider": data.values,
-            "chartCursor": {
-                "oneBalloonOnly": true,
-                cursorAlpha: 0.2,
-                leaveCursor: true,
-                fullWidth: false,
-                zoomable: false,
-            },
             "valueAxes": [{
                 id: 'current',
                 "axisAlpha": 0,
