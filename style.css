@@ -167,6 +167,23 @@ body.managers .student-list_item {
     margin-left: .3rem;
 }
 
+
+.student-list_item.rejected h2 .student-name,
+.student-list_item.rejected p {
+    color: #bbb;
+    background: none;
+}
+.student-list_item.rejected h2 .student-name {
+    text-decoration: line-through;
+}
+.student-list_item.rejected h2 .student-percentage {
+    background: none;
+}
+.student-list_item.rejected h2 .student-percentage .place-diff,
+.student-list_item.rejected p .points small {
+    display: none;
+}
+
 aside p {
     margin-bottom: .5rem;
 }
@@ -321,15 +338,11 @@ footer {
 }
 
 .amcharts-balloon-div:not(.amcharts-balloon-div-categoryAxis) div {
-    text-align: left!important;
-    font-size:1rem!important;
-}
-
-.amcharts-balloon-div:not(.amcharts-balloon-div-categoryAxis) div .student {
     font-family: PT Sans, sans-serif!important;
+    font-size: .82rem!important;
 }
 
-.amcharts-balloon-div:not(.amcharts-balloon-div-categoryAxis) div .points {
-    font-family: PT Serif, serif!important;
-    font-size: .82em!important;
+.amcharts-chart-div text[fill="#000000"][font-family="Verdana"][font-size="11px"] {
+    font-family: PT Sans, sans-serif!important;
+    font-size: .82rem!important;
 }
