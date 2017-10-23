@@ -102,6 +102,7 @@ body.managers .student-list_item {
     margin: 0;
     padding: 0;
     line-height: 1.2;
+    white-space: nowrap;
 }
 .student-list_item h2 .student-name {
     cursor: pointer;
