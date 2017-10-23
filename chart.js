@@ -326,7 +326,7 @@ function combineStudents(value, rejectedStudentsValue) {
         if(!id) {
             return x;
         }
-        return { ...x, values: x.values.map(convertValueToNumber) }
+        return Object.assign(x, { values: x.values.map(convertValueToNumber) });
     });
 
     const totalWeeks = result[0].values.length;
@@ -337,13 +337,10 @@ function combineStudents(value, rejectedStudentsValue) {
             const lastValue = x.values[x.values.length-1];
             const missedValues = Array(totalWeeks-x.values.length).fill(lastValue);
             Array.prototype.push.apply(x.values, missedValues)
-            return {
-                ...x,
-                status: "rejected",
-            };
+            return Object.assign(x, { status: "rejected", });
         })
         .map((x, id) => {
-            return { ...x, values: x.values.map(convertValueToNumber) }
+            return Object.assign(x, { values: x.values.map(convertValueToNumber) });
         });
 
 
