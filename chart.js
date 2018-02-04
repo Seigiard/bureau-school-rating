@@ -226,14 +226,16 @@ function renderStatistics(result) {
 
     list.sort((a, b) => b.diffPlaces - a.diffPlaces);
     const topUp = list[0].diffPlaces;
-    const topScore = list.sort((a, b) => b.diffPoints - a.diffPoints).slice(0, 5).map(x => `${x.name} <em>+${x.diffPoints}</em>`).join(',<br />');
+    const topStudents = list.sort((a, b) => b.diffPoints - a.diffPoints).slice(0, 5);
+    const topScore = topStudents.map(x => `${x.name} <em>+${x.diffPoints}</em>`).join(',<br />');
 
     const topOfWeek = topUp === 0 ? '' : `<dt>Взлёт недели</dt><dd>${getNamesByPlace(list, topUp)} <em>+${topUp} ${pluralize(topUp, ['место', 'места', 'мест'])}</em></dd>`;
+    const smartOfWeek = topStudents[0].diffPoints === '0.00' ? '' : `<dt>Умники недели</dt><dd>${topScore}</dd>`;
 
     el.appendChild(htmlToElement(`<dl>
             <dt>Лидер недели</dt><dd>${leader.name} <em>${leaderWeeks} ${pluralize(leaderWeeks, ['неделя', 'недели', 'недель'])}</em></dd>
             ${topOfWeek}
-            <dt>Умники недели</dt><dd>${topScore}</dd>
+            ${smartOfWeek}
         </dl>
         `));
 }
