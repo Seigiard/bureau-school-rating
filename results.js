@@ -4,9 +4,9 @@ const chartMargin = {
     left: 0,
     right: 0,
 }
-const itemHeight = 50;
-const itemMinWidth = 70;
-const itemMaxWidth = 150;
+const itemHeight = 35;
+const itemMinWidth = 15;
+const itemMaxWidth = 30;
 
 function convertValueToNumber(value) {
     if(!isNaN(Number(value))){
@@ -176,7 +176,7 @@ function renderCurrentStudents(result) {
         .sort((a, b) => a.values[lastValueId].place - b.values[lastValueId].place)
         .reduce((total, x) => {
             const currentValues = x.values[lastValueId];
-            const prevValues = x.values[lastValueId - 1] || x.values[lastValueId];
+            const prevValues = x.values[lastValueId - 1];
             const diffPlaces = (currentValues.place - prevValues.place) * -1;
             const currentPoint = currentValues.points.toFixed(2);
             const diffPoints = (currentValues.points - prevValues.points).toFixed(2);
@@ -185,20 +185,16 @@ function renderCurrentStudents(result) {
             total.push(`<div class='student-list_item ${x.status === "rejected" ? "rejected" : ""}' data-id='${x.id}'>
                 <h2>
                     <span class='place'>${currentValues.place}.</span>
-                    <span class="student-percentage" style="background-size:${100-currentValues.percentage_points}% 2px;">
+                    <span>
                         <span class="student-name">${x.name}</span>
-                        <span class='place-diff ${placeDiffStyle}'>${arrow}</span>
                     </span>
                 </h2>
-                <p>
-                    <span class='points'>${currentPoint} <small>+${diffPoints}</small></span>
-                </p>
             </div>`);
             return total;
         }, [])
         .join('');
 
-    el.appendChild(htmlToElement(`<div class='student-list'>${list}</div>`));
+    el.appendChild(htmlToElement(`<div class='student-list student-list__results'>${list}</div>`));
 }
 
 function renderStatistics(result) {
@@ -208,7 +204,7 @@ function renderStatistics(result) {
         .slice(1)
         .map((x) => {
             const currentValues = x.values[lastValueId];
-            const prevValues = x.values[lastValueId - 1] || x.values[lastValueId];
+            const prevValues = x.values[lastValueId - 1];
             const diffPlaces = (currentValues.place - prevValues.place) * -1;
             const diffPoints = (currentValues.points - prevValues.points).toFixed(2);
             return {
@@ -228,11 +224,9 @@ function renderStatistics(result) {
     const topUp = list[0].diffPlaces;
     const topScore = list.sort((a, b) => b.diffPoints - a.diffPoints).slice(0, 5).map(x => `${x.name} <em>+${x.diffPoints}</em>`).join(',<br />');
 
-    const topOfWeek = topUp === 0 ? '' : `<dt>Взлёт недели</dt><dd>${getNamesByPlace(list, topUp)} <em>+${topUp} ${pluralize(topUp, ['место', 'места', 'мест'])}</em></dd>`;
-
     el.appendChild(htmlToElement(`<dl>
             <dt>Лидер недели</dt><dd>${leader.name} <em>${leaderWeeks} ${pluralize(leaderWeeks, ['неделя', 'недели', 'недель'])}</em></dd>
-            ${topOfWeek}
+            <dt>Взлёт недели</dt><dd>${getNamesByPlace(list, topUp)} <em>+${topUp} ${pluralize(topUp, ['место', 'места', 'мест'])}</em></dd>
             <dt>Умники недели</dt><dd>${topScore}</dd>
         </dl>
         `));
@@ -286,6 +280,7 @@ function drawChart(data, studentLength) {
             }],
             "categoryAxis": {
                 position: 'top',
+                categoryFunction: x => '',
                 "axisAlpha": 0.1,
                 "gridThickness": 0,
             },
@@ -319,7 +314,7 @@ function drawChart(data, studentLength) {
 function getSpreadSheet(url) {
     return fetch(url) // Call the fetch function passing the url of the API as a parameter
         .then(r => r.json())
-        .then(r => r.feed.entry || [])
+        .then(r => r.feed.entry)
         .catch(console.error);
 }
 
@@ -485,9 +480,9 @@ function loadChart(dataUrl, rejectedDataUrl) {
         }));
 }
 
-function loadChartBySheets(hash, sheetId, sheetRejectedId) {
-    const dataUrl = `https://spreadsheets.google.com/feeds/cells/${hash}/${sheetId}/public/values?alt=json`;
-    const rejectedDataUrl = `https://spreadsheets.google.com/feeds/cells/${hash}/${sheetRejectedId}/public/values?alt=json`;
+function loadChartBySheets(sheetId, sheetRejectedId) {
+    const dataUrl = `https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/${sheetId}/public/values?alt=json`;
+    const rejectedDataUrl = `https://spreadsheets.google.com/feeds/cells/1EIWgWQ8puUahC9U0OyM0hvtcaz9H7JFoLeZoGsxbFbw/${sheetRejectedId}/public/values?alt=json`;
 
     return loadChart(dataUrl, rejectedDataUrl);
 }

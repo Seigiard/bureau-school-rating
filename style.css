@@ -38,10 +38,22 @@ header {
 nav li {
     display: inline-block;
     list-style-type: none;
+    font-size: 1em;
 }
 nav li a {
     display: inline-block;
     line-height: 1.4em;
+}
+nav li.prev-link {
+    font-size: 1em;
+}
+nav li.prev-link {
+}
+nav li.prev-link a {
+    margin-right: 1.5em;
+}
+nav li.next-link {
+    margin-left: 2em;
 }
 nav li strong {
     color: var(--keyColor);
@@ -83,12 +95,18 @@ a:hover, a:active, .link:hover, .link:active {
 .student-list {
     margin-top: 62px;
 }
+.student-list__results {
+    margin-top: 45px;
+}
 .student-list_item {
     height: 49px;
     cursor: pointer;
 }
 body.designers .student-list_item {
-    height: 49.37px
+    height: 49.4px
+}
+body.designers .student-list__results .student-list_item {
+    height: 34.57px;
 }
 body.editors .student-list_item {
     height: 49.47px;
@@ -96,6 +114,22 @@ body.editors .student-list_item {
 body.managers .student-list_item {
     height: 49px;
 }
+
+
+body.jan2018 .student-list {
+    margin-top: 60px;
+}
+body.jan2018.designers .student-list_item {
+    height: 49.07px
+}
+body.jan2018.editors .student-list_item {
+    height: 49.27px
+}
+body.jan2018.managers .student-list_item {
+    height: 46.77px
+}
+
+
 .student-list_item h2, p {
     font-size: inherit;
     font-weight: inherit;
@@ -173,6 +207,10 @@ body.managers .student-list_item {
 .student-list_item.rejected p {
     color: #bbb;
     background: none;
+}
+.student-list__results .student-list_item.rejected h2 .student-name,
+.student-list__results .student-list_item.rejected .place {
+    color: #eee;
 }
 .student-list_item.rejected h2 .student-name {
     text-decoration: line-through;
@@ -262,14 +300,6 @@ footer {
     -ms-flex-item-align: auto;
     align-self: auto;
     min-width: 250px;
-}
-
-.poem {
-    max-width: 500px;
-    display: none;
-}
-.poem img {
-    width: 100%;
 }
 
 .scrollbox {
