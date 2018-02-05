@@ -130,6 +130,14 @@ body.jan2018.managers .student-list_item {
 }
 
 
+body.top30 .student-list {
+    margin-top: 60px;
+}
+body.top30 .student-list_item {
+    height: 48px
+}
+
+
 .student-list_item h2, p {
     font-size: inherit;
     font-weight: inherit;
