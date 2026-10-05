@@ -1,0 +1,9 @@
+{
+  "name": "project-anti-slop-lint",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@oxlint/plugins": "1.87.0",
+    "oxlint": "1.87.0"
+  }
+}

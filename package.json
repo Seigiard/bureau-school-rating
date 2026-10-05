@@ -1,0 +1,7 @@
+{
+  "name": "bureau-school-rating",
+  "private": true,
+  "scripts": {
+    "lint:anti-slop": "tools/oxlint/node_modules/.bin/oxlint --config .oxlintrc.json ."
+  }
+}
